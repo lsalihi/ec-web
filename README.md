@@ -1,8 +1,17 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
+## Prerequisites
 
-First, run the development server:
+Ensure you have Node.js version 18 installed. You can download it from [here](https://nodejs.org/).
+
+## First Steps
+
+1. Install dependencies:
+
+```bash
+npm install
+
 
 ```bash
 npm run dev
