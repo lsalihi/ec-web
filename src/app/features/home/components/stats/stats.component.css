@@ -1,0 +1,28 @@
+.stats {
+    background-color: #F4F4F9;
+    padding: 60px 20px;
+    color: #2C3E50;
+    text-align: center;
+  
+    .stat-item {
+      margin-bottom: 20px;
+  
+      h3 {
+        color: #0072BB; 
+        font-size: 48px;
+        margin: 0;
+      }
+  
+      p {
+        font-size: 18px;
+        color: #6C757D;
+      }
+    }
+  }
+  
+  .section-separator {
+    border: none;
+    height: 1px;
+    background-color: #E0E0E0; /* Light gray for a subtle effect */
+    margin: 60px 0; /* Space above and below the separator */
+}

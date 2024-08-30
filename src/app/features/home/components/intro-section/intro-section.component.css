@@ -1,0 +1,118 @@
+.intro-section {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    padding: 80px 20px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.intro-container {
+    max-width: 1200px;
+    width: 100%;
+    z-index: 2;
+}
+
+.intro-text {
+    text-align: left;
+    color: #ffffff;
+    margin-bottom: 40px;
+}
+
+.intro-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.intro-subtitle {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+.intro-description {
+    font-size: 1.2rem;
+    max-width: 600px;
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+.app-store-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.app-store-buttons a {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.app-store-buttons a:hover {
+    transform: translateY(-5px);
+}
+
+.app-store-buttons img {
+    height: 60px;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+}
+
+/* Animated background elements */
+.bg-element {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.bg-element:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    top: 10%;
+    left: 10%;
+    animation: float 8s infinite;
+}
+
+.bg-element:nth-child(2) {
+    width: 120px;
+    height: 120px;
+    top: 70%;
+    right: 20%;
+    animation: float 10s infinite;
+}
+
+.bg-element:nth-child(3) {
+    width: 60px;
+    height: 60px;
+    bottom: 15%;
+    left: 30%;
+    animation: float 6s infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@media (max-width: 768px) {
+    .intro-title {
+        font-size: 2.5rem;
+    }
+    .intro-subtitle {
+        font-size: 1.5rem;
+    }
+    .intro-description {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,115 @@
+.publish-charging-point {
+    background: linear-gradient(135deg, #fdbb2d, #22c1c3);
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.publish-charging-point::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: #f8f9fa;
+    transform: skewY(-3deg);
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.intro-text {
+    font-size: 1.2rem;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.benefits-list {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.benefit-item {
+    flex-basis: calc(33.333% - 20px);
+    min-width: 250px;
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    backdrop-filter: blur(5px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.benefit-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.benefit-title {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.benefit-description {
+    line-height: 1.6;
+}
+
+.conclusion-text {
+    font-size: 1.2rem;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.cta-button {
+    display: block;
+    width: 250px;
+    margin: 0 auto;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #22c1c3;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255,255,255,0.4);
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    .benefit-item {
+        flex-basis: 100%;
+    }
+}

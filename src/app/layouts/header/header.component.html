@@ -1,0 +1,46 @@
+<header class="header">
+    <div class="header-container">
+        <div class="logo">
+            <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="Logo" />
+        </div>
+        <div class="nav-group">
+            <div class="location">
+                <span class="location-icon">📍</span>
+                <div class="location-details">
+                    <span class="location-text">44000 Nantes</span>
+                    <a routerLink="/update-location" class="location-link">Mettre à jour l'emplacement</a>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <a routerLink="/find-stations" class="header-button">Trouver des stations</a>
+                <a routerLink="/list-station" class="header-button">Lister votre borne</a>
+            </div>
+        </div>
+        <div class="user-group">
+            <div class="language-selector">
+                <button class="language-button">
+                    <span class="flag-icon">🇫🇷</span>
+                    <span>FR</span>
+                </button>
+                <ul class="language-list">
+                    <li class="language-option">
+                        <a href="#" class="language-link">
+                            <span class="flag-icon">🇫🇷</span>
+                            <span>FR</span>
+                        </a>
+                    </li>
+                    <li class="language-option">
+                        <a href="#" class="language-link">
+                            <span class="flag-icon">🇬🇧</span>
+                            <span>EN</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="user-info">
+                <span>Bonjour,</span>
+                <a routerLink="/account" class="account-link">Identifiez-vous</a>
+            </div>
+        </div>
+    </div>
+</header>

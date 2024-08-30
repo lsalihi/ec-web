@@ -1,0 +1,114 @@
+.find-charging-point {
+    background-color: #f8f9fa;
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.find-charging-point::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-color: #f8f9fa;
+    transform: skewY(-3deg);
+    z-index: 1;
+}
+
+.content-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: #1a2a6c;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.intro-text {
+    font-size: 1.2rem;
+    color: #555;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.features-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.feature-item {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    color: #b21f1f;
+    margin-bottom: 20px;
+}
+
+.feature-title {
+    font-size: 1.3rem;
+    color: #1a2a6c;
+    margin-bottom: 10px;
+}
+
+.feature-description {
+    color: #555;
+    line-height: 1.6;
+}
+
+.conclusion-text {
+    font-size: 1.2rem;
+    color: #555;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.search-button {
+    display: block;
+    width: 250px;
+    margin: 0 auto;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(26,42,108,0.4);
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    .features-list {
+        grid-template-columns: 1fr;
+    }
+}
