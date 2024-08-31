@@ -1,27 +1,103 @@
-<div class="login-popup">
-    <div class="login-image"></div>
-    <div class="login-content">
-      <img src="path-to-your-logo.png" alt="Logo" class="login-logo">
-      <h2 class="login-title">Rejoindre PowerChargeSpot</h2>
-      <p class="login-subtitle">Le réseau de recharge de VE le plus vaste et le plus pratique</p>
-      
-      <button class="login-button google-button">
-        <img src="path-to-google-icon.png" alt="Google">
-        Continuer avec Google
-      </button>
-      
-      <button class="login-button apple-button">
-        <img src="path-to-apple-icon.png" alt="Apple">
-        Continuer avec Apple
-      </button>
-      
-      <button class="login-button email-button">
-        Continuer avec l'email
-      </button>
-      
-      <p class="login-terms">
-        En vous inscrivant, vous acceptez les <a href="#">Conditions de Service</a> et la <a href="#">Politique de Confidentialité</a>.
-      </p>
+<div class="login-popup" role="dialog" aria-labelledby="login-title">
+    <div class="login-image">
+        <div class="image-overlay">
+            <h1 id="login-title" class="image-title">Bienvenue chez PowerChargeSpot</h1>
+            <p class="image-subtitle">Rechargez votre véhicule, simplifiez votre vie</p>
+        </div>
     </div>
-    <button class="close-button">&times;</button>
-  </div>
+    <div class="login-content">
+        <div *ngIf="!showEmailForm" class="login-header">
+            <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="PowerChargeSpot Logo" class="login-logo" />
+            <h2 class="login-title">Rejoignez la révolution électrique</h2>
+            <p class="login-subtitle">Accédez au réseau de recharge le plus vaste et le plus pratique</p>
+        </div>
+
+
+        <div *ngIf="!showEmailForm" class="login-options">
+            <button class="login-button google-button" (click)="loginWithGoogle()"
+                aria-label="Se connecter avec Google">
+                <img src="/assets/google.png" alt="" aria-hidden="true">
+                Continuer avec Google
+            </button>
+
+            <button class="login-button apple-button" (click)="loginWithApple()" aria-label="Se connecter avec Apple">
+                <img src="/assets/apple.png" alt="" aria-hidden="true">
+                Continuer avec Apple
+            </button>
+
+            <button class="login-button email-button" (click)="toggleEmailForm()" [attr.aria-expanded]="showEmailForm"
+                aria-controls="email-form">
+                <img src="/assets/mail.png" alt="" aria-hidden="true">
+                Continuer avec l'email
+            </button>
+        </div>
+
+        <div *ngIf="showEmailForm" class="login-options">
+            <button class="back-button" (click)="goBack()">
+                <img src="/assets/back.png" alt="" aria-hidden="true">
+                Retour
+            </button>
+        </div>
+        
+
+        <div *ngIf="showEmailForm && !newAccount">
+            <h2 class="login-title">Login</h2>
+        </div>
+        <div *ngIf="showEmailForm && newAccount">
+            <h2 class="login-title">Sign Up</h2>
+        </div>
+        <form *ngIf="showEmailForm" [formGroup]="loginForm" (ngSubmit)="loginWithEmail()" class="email-form" id="email-form">
+            <div class="form-group">
+                <label for="email" class="visually-hidden">Adresse e-mail</label>
+                <input type="email" id="email" formControlName="email" placeholder="Votre adresse email">
+                <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="error-message">
+                    Veuillez entrer une adresse e-mail valide.
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="visually-hidden">Mot de passe</label>
+                <input type="password" id="password" formControlName="password" placeholder="Votre mot de passe">
+                <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="error-message">
+                    Le mot de passe doit contenir au moins 6 caractères.
+                </div>
+            </div>
+            <div *ngIf="newAccount" class="form-group">
+                <label for="confirmPassword" class="visually-hidden">Confirmer le mot de passe</label>
+                <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirmer le mot de passe">
+                <div *ngIf="loginForm.get('confirmPassword')?.invalid && (loginForm.get('confirmPassword')?.dirty || loginForm.get('confirmPassword')?.touched)" class="error-message">
+                    Les mots de passe ne correspondent pas.
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="remember-me">
+                    <input type="checkbox" formControlName="rememberMe">
+                    Se souvenir de moi
+                </label>
+            </div>
+            <button type="submit" class="submit-button" [disabled]="loginForm.invalid || isLoading">
+                <span *ngIf="!isLoading">{{ newAccount ? 'Créer un compte' : 'Se connecter' }}</span>
+                <span *ngIf="isLoading" class="loader"></span>
+            </button>
+        </form>
+
+        <div *ngIf="errorMessage" class="error-message">{{errorMessage}}</div>
+
+        <p *ngIf="!showEmailForm" class="login-terms">
+            En vous inscrivant, vous acceptez nos
+            <a href="#" (click)="openTerms($event)">Conditions de Service</a> et notre
+            <a href="#" (click)="openPrivacyPolicy($event)">Politique de Confidentialité</a>.
+        </p>
+
+        <div *ngIf="showEmailForm" class="form-toggle">
+            <button [class.active]="!newAccount" (click)="toggleNewAccount(false)">Se connecter</button>
+            <button [class.active]="newAccount" (click)="toggleNewAccount(true)">Créer un compte</button>
+        </div>
+        <div *ngIf="showEmailForm">
+            <a href="#" (click)="openForgotPassword($event)">Mot de passe oublié ?</a>
+        </div>
+
+    </div>
+    <button class="close-button" (click)="closePopup()" aria-label="Fermer">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>

@@ -10,8 +10,8 @@ export class AuthService {
 
   openLoginDialog() {
     this.dialog.open(LoginPopupComponent, {
-      width: '400px',
-      panelClass: 'login-dialog'
+     // width: '400px',
+     // panelClass: 'login-dialog'
     });
   }
 
