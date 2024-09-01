@@ -1,12 +1,25 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginPopupComponent } from '../features/auth/login-popup/login-popup.component';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private dialog: MatDialog) {}
+
+  private apiUrl = 'http://134.255.177.102:8080/idp';
+
+  constructor(private dialog: MatDialog, private http: HttpClient) {}
+
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/uaa/token`, { email, password });
+  }
+
+  register(user: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, user);
+  }
 
   openLoginDialog() {
     this.dialog.open(LoginPopupComponent, {

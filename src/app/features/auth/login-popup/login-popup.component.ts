@@ -1,97 +1,110 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
-import { MatDialogContent, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import * as AuthActions from '../../../services/auth/auth.actions';
+import * as AuthSelectors from '../../../services/auth/auth.selectors';
+
 
 @Component({
   selector: 'app-login-popup',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule,
-    FormsModule
+    ReactiveFormsModule
   ],
   templateUrl: './login-popup.component.html',
-  styleUrl: './login-popup.component.css'
+  styleUrls: ['./login-popup.component.css']
 })
 export class LoginPopupComponent implements OnInit {
   showEmailForm = false;
   newAccount = false;
   loginForm: FormGroup;
-  isLoading = false;
-  errorMessage = '';
+  isLoading$: Observable<boolean>;
+  errorMessage$: Observable<string | null>;
 
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<LoginPopupComponent>,
-    private authService: AuthService
+    private store: Store
   ) {
-    this.loginForm = this.fb.group({
+    this.isLoading$ = this.store.select(AuthSelectors.selectAuthLoading);
+    this.errorMessage$ = this.store.select(AuthSelectors.selectAuthError);
+    this.loginForm = this.createForm();
+  }
+
+  ngOnInit(): void {
+    this.updateFormValidation();
+  }
+
+  createForm(): FormGroup {
+    return this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: [''],
       rememberMe: [false]
-    }, { validator: this.passwordMatchValidator });
+    });
   }
 
-  ngOnInit(): void {
-    this.loginForm.get('confirmPassword')?.setValidators(this.newAccount ? [Validators.required] : null);
-    this.loginForm.get('confirmPassword')?.updateValueAndValidity();
+  updateFormValidation(): void {
+    const confirmPasswordControl = this.loginForm.get('confirmPassword');
+    if (this.newAccount) {
+      confirmPasswordControl?.setValidators([Validators.required, this.passwordMatchValidator.bind(this)]);
+    } else {
+      confirmPasswordControl?.clearValidators();
+    }
+    confirmPasswordControl?.updateValueAndValidity();
+    this.loginForm.updateValueAndValidity();
   }
 
   toggleNewAccount(value: boolean): void {
     this.newAccount = value;
-    this.loginForm.get('confirmPassword')?.setValidators(this.newAccount ? [Validators.required] : null);
-    this.loginForm.get('confirmPassword')?.updateValueAndValidity();
+    this.updateFormValidation();
   }
 
   goBack(): void {
     this.showEmailForm = false;
     this.newAccount = false;
     this.loginForm.reset();
+    this.updateFormValidation();
   }
 
   submitForm(): void {
     if (this.loginForm.valid) {
+      const { email, password, rememberMe } = this.loginForm.value;
       if (this.newAccount) {
-        this.signUp();
+        this.store.dispatch(AuthActions.registerUser({ user: { email, password } }));
       } else {
-        this.loginWithEmail();
+        this.store.dispatch(AuthActions.login({ email, password }));
       }
+    } else {
+      this.loginForm.markAllAsTouched();
     }
-  }
-
-  loginWithGoogle(): void {
-    this.isLoading = true;
-    // Implement Google login logic
-  }
-
-  loginWithApple(): void {
-    this.isLoading = true;
-    // Implement Apple login logic
   }
 
   toggleEmailForm(): void {
     this.showEmailForm = !this.showEmailForm;
+    this.newAccount = false;
+    this.updateFormValidation();
   }
 
-  loginWithEmail(): void {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      const { email, password, rememberMe } = this.loginForm.value;
-      // Implement email login logic
-    } else {
-      this.loginForm.markAllAsTouched();
-      this.errorMessage = 'Please fill in all required fields correctly.';
-    }
+  passwordMatchValidator(control: AbstractControl): {[key: string]: boolean} | null {
+    const password = this.loginForm.get('password')?.value;
+    const confirmPassword = control.value;
+    return password === confirmPassword ? null : { 'mismatch': true };
   }
+
+  loginWithGoogle(): void {
+    //this.store.dispatch(AuthActions.loginWithGoogle());
+  }
+
+  loginWithApple(): void {
+    //this.store.dispatch(AuthActions.loginWithApple());
+  }
+
 
   openTerms(event: Event): void {
     event.preventDefault();
@@ -106,36 +119,14 @@ export class LoginPopupComponent implements OnInit {
   openForgotPassword(event: Event): void {
     event.preventDefault();
     this.dialogRef.close('forgotPassword');
-    // You might want to open another dialog or navigate to a new route here
+    // You might want to dispatch an action here to handle forgot password
   }
 
   openSignUp(event: Event): void {
     this.newAccount = true;
-    //event.preventDefault();
-    //this.dialogRef.close('signUp');
-    // You might want to open another dialog or navigate to a new route here
   }
 
   closePopup(): void {
     this.dialogRef.close();
-  }
-
-  changeLanguage(event: Event): void {
-    const selectedLanguage = (event.target as HTMLSelectElement).value;
-    //this.translateService.use(selectedLanguage);
-  }
-
-  private handleError(context: string, error: any): void {
-    console.error(context, error);
-    this.errorMessage = 'An error occurred. Please try again.';
-    // You might want to show more specific error messages based on the error type
-  }
-
-  signUp(): void {
-    // Implement sign up logic
-  }
-
-  passwordMatchValidator(g: FormGroup) {
-    return g.get('password')?.value === g.get('confirmPassword')?.value ? null : {'mismatch': true};
   }
 }
