@@ -1,0 +1,29 @@
+<form [formGroup]="chargingStationForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="currentStep === 1">
+      <h2>Step 1: Basic Information</h2>
+      <div>
+        <label for="name">Name:</label>
+        <input id="name" formControlName="name" type="text">
+      </div>
+      <!-- Add other fields for step 1 -->
+    </div>
+  
+    <div *ngIf="currentStep === 2">
+      <h2>Step 2: Location</h2>
+      <div formGroupName="location">
+        <div>
+          <label for="street">Street:</label>
+          <input id="street" formControlName="street" type="text">
+        </div>
+        <!-- Add other location fields -->
+      </div>
+    </div>
+  
+    <!-- Add sections for steps 3, 4, and 5 -->
+  
+    <div>
+      <button type="button" (click)="previousStep()" [disabled]="currentStep === 1">Previous</button>
+      <button type="button" (click)="nextStep()" *ngIf="currentStep < totalSteps">Next</button>
+      <button type="submit" *ngIf="currentStep === totalSteps">Submit</button>
+    </div>
+  </form>
