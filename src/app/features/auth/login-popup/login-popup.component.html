@@ -69,7 +69,6 @@
                             Se souvenir de moi
                         </label>
                     </div>
-                    <pre>{{loginForm.invalid}}</pre>
                     <button type="submit" class="submit-button" [disabled]="loginForm.invalid || (isLoading$ | async)">
                         <span *ngIf="!(isLoading$ | async)">{{ newAccount ? 'Créer un compte' : 'Se connecter' }}</span>
                         <span *ngIf="isLoading$ | async" class="loader"></span>

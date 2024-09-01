@@ -10,13 +10,21 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return store.select(selectAuthToken).pipe(
     take(1),
     switchMap(token => {
+      let authReq = req.clone({
+        withCredentials: true // This allows cookies to be sent with the request
+      });
+
       if (token) {
-        const authReq = req.clone({
-          setHeaders: { Authorization: `Bearer ${token}` }
+        authReq = authReq.clone({
+          setHeaders: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
         });
-        return next(authReq);
       }
-      return next(req);
+
+      return next(authReq);
     })
   );
 };

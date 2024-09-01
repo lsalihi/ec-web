@@ -1,0 +1,8 @@
+{
+    "/idp": {
+      "target": "http://134.255.177.102:8080",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }

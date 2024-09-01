@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
 
-  private apiUrl = 'http://134.255.177.102:8080/idp';
+  private apiUrl = '/idp';
 
   constructor(private dialog: MatDialog, private http: HttpClient) {}
 

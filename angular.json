@@ -66,6 +66,10 @@
             },
             "development": {
               "buildTarget": "ec-web:build:development"
+            },
+            "options": {
+              "port": 3000,
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
