@@ -1,9 +1,9 @@
 .publish-charging-point {
-    background: linear-gradient(135deg, #fdbb2d, #22c1c3);
-    padding: 80px 20px;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+    color: #ffffff;
+    padding: 80px 0;
     position: relative;
     overflow: hidden;
-    color: #ffffff;
 }
 
 .publish-charging-point::before {
@@ -17,72 +17,77 @@
     transform: skewY(-3deg);
 }
 
-.content-wrapper {
+.container {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
     position: relative;
     z-index: 2;
 }
 
 .section-title {
-    font-size: 2.5rem;
     text-align: center;
+    font-size: 2.5rem;
     margin-bottom: 30px;
-    color: #ffffff;
+    color: #fdbb2d;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
 .intro-text {
-    font-size: 1.2rem;
     text-align: center;
     max-width: 800px;
-    margin: 0 auto 40px;
+    margin: 0 auto 50px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.9;
 }
 
-.benefits-list {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
 }
 
 .benefit-item {
-    flex-basis: calc(33.333% - 20px);
-    min-width: 250px;
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    backdrop-filter: blur(5px);
+    text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .benefit-item:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
 .benefit-icon {
     font-size: 2.5rem;
     margin-bottom: 20px;
+    color: #fdbb2d;
 }
 
 .benefit-title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     margin-bottom: 10px;
-    color: #ffffff;
+    font-weight: bold;
 }
 
 .benefit-description {
-    line-height: 1.6;
+    font-size: 1rem;
+    line-height: 1.5;
+    opacity: 0.9;
 }
 
 .conclusion-text {
-    font-size: 1.2rem;
     text-align: center;
     max-width: 800px;
-    margin: 0 auto 40px;
+    margin: 0 auto 30px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.9;
 }
 
 .cta-button {
@@ -92,24 +97,27 @@
     padding: 15px 30px;
     font-size: 1.1rem;
     font-weight: bold;
-    color: #22c1c3;
-    background-color: #ffffff;
+    color: #1a2a6c;
+    background-color: #fdbb2d;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    text-decoration: none;
 }
 
 .cta-button:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255,255,255,0.4);
+    box-shadow: 0 5px 15px rgba(253, 187, 45, 0.4);
 }
 
 @media (max-width: 768px) {
     .section-title {
         font-size: 2rem;
     }
-    .benefit-item {
-        flex-basis: 100%;
+    
+    .benefits-grid {
+        grid-template-columns: 1fr;
     }
 }

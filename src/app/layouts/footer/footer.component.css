@@ -1,8 +1,10 @@
+/* Footer */
 .footer {
     background: linear-gradient(135deg, #1a2a6c, #b21f1f);
     color: #ffffff;
-    padding: 60px 0 30px;
+    padding: 80px 0 30px;
     position: relative;
+    overflow: hidden;
 }
 
 .footer::before {
@@ -12,7 +14,7 @@
     left: 0;
     right: 0;
     height: 100px;
-    background: #ffffff;
+    background-color: #f8f9fa;
     transform: skewY(-3deg);
 }
 
@@ -20,6 +22,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative;
+    z-index: 2;
 }
 
 .footer-content {

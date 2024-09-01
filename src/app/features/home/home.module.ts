@@ -25,12 +25,10 @@ import { MatDivider } from '@angular/material/divider';
   imports: [
     CommonModule,
     HomeRoutingModule,
-    MatButtonModule,
+
     LayoutModule,
     //BrowserAnimationsModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDivider
+
   ]
 })
 export class HomeModule { }

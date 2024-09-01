@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,5 +9,10 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  constructor(private authService: AuthService) {}
 
+  openLoginPopup(event: Event) {
+    event.preventDefault(); // Prevent the default link behavior
+    this.authService.openLoginDialog();
+  }
 }

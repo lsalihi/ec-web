@@ -1,21 +1,104 @@
-.testimonials {
-    background-color: #FFFFFF;
-    padding: 60px 20px;
-    color: #2C3E50;
+/* Testimonials Section */
+.testimonials-section {
+    background-color: #f8f9fa;
+    padding: 80px 0 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials-section::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(135deg, #22c1c3, #fdbb2d);
+    transform: skewY(-3deg);
+}
+
+.testimonials-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.section-title {
     text-align: center;
-  
-    h2 {
-      color: #00A878; 
+    font-size: 2.5rem;
+    color: #1a2a6c;
+    margin-bottom: 50px;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.testimonial-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-content {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+}
+
+.author-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.author-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.author-name {
+    font-weight: bold;
+    color: #1a2a6c;
+}
+
+.author-title {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.testimonial-rating {
+    color: #fdbb2d;
+    font-size: 1.3rem;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
     }
-  
-    .testimonial {
-      margin: 20px 0;
-      color: #6C757D; 
+   
+    .testimonials-grid {
+        grid-template-columns: 1fr;
     }
-  
-    .author {
-      color: #0072BB; 
-      font-weight: bold;
-    }
-  }
-  
+}

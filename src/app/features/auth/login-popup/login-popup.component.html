@@ -1,0 +1,93 @@
+<div class="login-popup" role="dialog" aria-labelledby="login-title">
+    <div class="login-content">
+        <div class="scrollable-content">
+            <div [class.active]="!showEmailForm" class="initial-view">
+                <div class="login-header">
+                    <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="PowerChargeSpot Logo" class="login-logo" />
+                    <h2 class="login-title" id="login-title">Rejoignez la révolution électrique</h2>
+                    <p class="login-subtitle">Accédez au réseau de recharge le plus vaste et le plus pratique</p>
+                </div>
+
+                <div class="login-options">
+                    <button class="login-button google-button" (click)="loginWithGoogle()" aria-label="Se connecter avec Google">
+                        <img src="/assets/google.png" alt="" aria-hidden="true">
+                        Continuer avec Google
+                    </button>
+
+                    <button class="login-button apple-button" (click)="loginWithApple()" aria-label="Se connecter avec Apple">
+                        <img src="/assets/apple.png" alt="" aria-hidden="true">
+                        Continuer avec Apple
+                    </button>
+
+                    <button class="login-button email-button" (click)="toggleEmailForm()" [attr.aria-expanded]="showEmailForm" aria-controls="email-form">
+                        <img src="/assets/mail.png" alt="" aria-hidden="true">
+                        Continuer avec l'email
+                    </button>
+                </div>
+
+                <p class="login-terms">
+                    En vous inscrivant, vous acceptez nos
+                    <a href="#" (click)="openTerms($event)">Conditions de Service</a> et notre
+                    <a href="#" (click)="openPrivacyPolicy($event)">Politique de Confidentialité</a>.
+                </p>
+            </div>
+
+            <div [class.active]="showEmailForm" class="email-form-view">
+                <button class="back-button" (click)="goBack()">
+                    <img src="/assets/back.png" alt="" aria-hidden="true">
+                    Retour
+                </button>
+
+                <h2 class="login-title">{{ newAccount ? 'Sign Up' : 'Login' }}</h2>
+
+                <form [formGroup]="loginForm" (ngSubmit)="submitForm()" class="email-form" id="email-form">
+
+                    <div class="form-group">
+                        <label for="email" class="visually-hidden">Adresse e-mail</label>
+                        <input type="email" id="email" formControlName="email" placeholder="Votre adresse email">
+                        <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="error-message">
+                            Veuillez entrer une adresse e-mail valide.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="visually-hidden">Mot de passe</label>
+                        <input type="password" id="password" formControlName="password" placeholder="Votre mot de passe">
+                        <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="error-message">
+                            Le mot de passe doit contenir au moins 6 caractères.
+                        </div>
+                    </div>
+                    <div *ngIf="newAccount" class="form-group">
+                        <label for="confirmPassword" class="visually-hidden">Confirmer le mot de passe</label>
+                        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirmer le mot de passe">
+                        <div *ngIf="loginForm.get('confirmPassword')?.invalid && (loginForm.get('confirmPassword')?.dirty || loginForm.get('confirmPassword')?.touched)" class="error-message">
+                            Les mots de passe ne correspondent pas.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="remember-me">
+                            <input type="checkbox" formControlName="rememberMe">
+                            Se souvenir de moi
+                        </label>
+                    </div>
+                    <button type="submit" class="submit-button" [disabled]="loginForm.invalid || (isLoading$ | async)">
+                        <span *ngIf="!(isLoading$ | async)">{{ newAccount ? 'Créer un compte' : 'Se connecter' }}</span>
+                        <span *ngIf="isLoading$ | async" class="loader"></span>
+                    </button>
+                </form>
+
+                <div *ngIf="errorMessage$ | async as errorMessage" class="error-message">{{errorMessage}}</div>
+
+                <div class="form-toggle">
+                    <button [class.active]="!newAccount" (click)="toggleNewAccount(false)">Se connecter</button>
+                    <button [class.active]="newAccount" (click)="toggleNewAccount(true)">Créer un compte</button>
+                </div>
+                <div class="forgot-password">
+                    <a href="#" (click)="openForgotPassword($event)">Mot de passe oublié ?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="close-button" (click)="closePopup()" aria-label="Fermer">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
