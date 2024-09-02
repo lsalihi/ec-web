@@ -1,29 +1,361 @@
-<form [formGroup]="chargingStationForm" (ngSubmit)="onSubmit()">
-    <div *ngIf="currentStep === 1">
-      <h2>Step 1: Basic Information</h2>
-      <div>
-        <label for="name">Name:</label>
-        <input id="name" formControlName="name" type="text">
+<form [formGroup]="chargingStationForm" (ngSubmit)="onSubmit()" class="container mt-4">
+    <ul class="nav nav-tabs mb-3">
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="currentStep === 1" (click)="setStep(1)">Basic Information</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="currentStep === 2" (click)="setStep(2)">Location</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="currentStep === 3" (click)="setStep(3)">Connectors</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="currentStep === 4" (click)="setStep(4)">Availabilities</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [class.active]="currentStep === 5" (click)="setStep(5)">Images & Contact</a>
+      </li>
+    </ul>
+  
+    <!-- Step 1: Basic Information -->
+    <div *ngIf="currentStep === 1" formGroupName="basicInfo" class="mb-4">
+      <h2>Basic Information</h2>
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" id="name" formControlName="name" class="form-control">
       </div>
-      <!-- Add other fields for step 1 -->
+  
+      <div class="mb-3">
+        <label for="type" class="form-label">Type</label>
+        <select id="type" formControlName="type" class="form-select">
+          <option *ngFor="let type of stationTypes" [value]="type">{{type}}</option>
+        </select>
+      </div>
+  
+      <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <select id="status" formControlName="status" class="form-select">
+          <option *ngFor="let status of stationStatuses" [value]="status">{{status}}</option>
+        </select>
+      </div>
+  
+      <div class="mb-3">
+        <label for="bookingOptions" class="form-label">Booking Options</label>
+        <select id="bookingOptions" formControlName="bookingOptions" class="form-select">
+          <option *ngFor="let option of bookingOptions" [value]="option">{{option}}</option>
+        </select>
+      </div>
+  
+      <div class="mb-3">
+        <label for="pricePerChargingSession" class="form-label">Price per Charging Session</label>
+        <input type="number" id="pricePerChargingSession" formControlName="pricePerChargingSession" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="durationOfChargingSession" class="form-label">Duration of Charging Session</label>
+        <select id="durationOfChargingSession" formControlName="durationOfChargingSession" class="form-select">
+          <option *ngFor="let duration of chargingDurations" [value]="duration">{{duration}} minutes</option>
+        </select>
+      </div>
+  
+      <div class="mb-3">
+        <label for="capacity" class="form-label">Capacity</label>
+        <input type="number" id="capacity" formControlName="capacity" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="energySource" class="form-label">Energy Sources</label>
+        <select id="energySource" formControlName="energySource" multiple class="form-select">
+          <option *ngFor="let source of energySources" [value]="source">{{source}}</option>
+        </select>
+      </div>
+  
+      <div class="mb-3">
+        <label for="maxPowerOutput" class="form-label">Max Power Output</label>
+        <input type="number" id="maxPowerOutput" formControlName="maxPowerOutput" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="paymentMethods" class="form-label">Payment Methods</label>
+        <select id="paymentMethods" formControlName="paymentMethods" multiple class="form-select">
+          <option *ngFor="let method of paymentMethods" [value]="method">{{method}}</option>
+        </select>
+      </div>
+  
+      <div class="mb-3">
+        <label for="networkOperator" class="form-label">Network Operator</label>
+        <input type="text" id="networkOperator" formControlName="networkOperator" class="form-control">
+      </div>
     </div>
   
-    <div *ngIf="currentStep === 2">
-      <h2>Step 2: Location</h2>
-      <div formGroupName="location">
-        <div>
-          <label for="street">Street:</label>
-          <input id="street" formControlName="street" type="text">
+    <!-- Step 2: Location -->
+    <div *ngIf="currentStep === 2" formGroupName="location" class="mb-4">
+      <h2>Location</h2>
+      <div class="mb-3">
+        <label for="street" class="form-label">Street</label>
+        <input type="text" id="street" formControlName="street" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="streetNumber" class="form-label">Street Number</label>
+        <input type="text" id="streetNumber" formControlName="streetNumber" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="complementAddress" class="form-label">Complement Address</label>
+        <input type="text" id="complementAddress" formControlName="complementAddress" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="city" class="form-label">City</label>
+        <input type="text" id="city" formControlName="city" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="postalCode" class="form-label">Postal Code</label>
+        <input type="text" id="postalCode" formControlName="postalCode" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <input type="text" id="country" formControlName="country" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="latitude" class="form-label">Latitude</label>
+        <input type="number" id="latitude" formControlName="latitude" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="longitude" class="form-label">Longitude</label>
+        <input type="number" id="longitude" formControlName="longitude" class="form-control">
+      </div>
+  
+      <div class="mb-3">
+        <label for="instructions" class="form-label">Instructions</label>
+        <textarea id="instructions" formControlName="instructions" class="form-control"></textarea>
+      </div>
+  
+      <div class="mb-3">
+        <label for="accessibilityFeatures" class="form-label">Accessibility Features</label>
+        <select id="accessibilityFeatures" formControlName="accessibilityFeatures" multiple class="form-select">
+          <option *ngFor="let feature of accessibilityFeatures" [value]="feature">{{feature}}</option>
+        </select>
+      </div>
+  
+      <div class="mb-3">
+        <label for="amenities" class="form-label">Amenities</label>
+        <select id="amenities" formControlName="amenities" multiple class="form-select">
+          <option *ngFor="let amenity of amenities" [value]="amenity">{{amenity}}</option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Step 3: Connectors -->
+    <!--div *ngIf="currentStep === 3" class="connectors-section">
+        <h2>Connectors</h2>
+        <button class="btn btn-primary" (click)="openConnectorPopup()">Add Connector</button>
+        
+        <table class="table mt-3">
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Power (kW)</th>
+              <th>Voltage (V)</th>
+              <th>Intensity (A)</th>
+              <th>Charging Speed (kW/h)</th>
+              <th>Format</th>
+              <th>Quantity</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let connector of connectors; let i = index">
+              <td>{{ connector.connectorType }}</td>
+              <td>{{ connector.power }}</td>
+              <td>{{ connector.voltage }}</td>
+              <td>{{ connector.intensity }}</td>
+              <td>{{ connector.chargingSpeed }}</td>
+              <td>{{ connector.connectorFormat }}</td>
+              <td>
+                <button class="btn btn-sm btn-secondary" (click)="decrementConnector(i)" [disabled]="connector.quantity <= 1">-</button>
+                {{ connector.quantity }}
+                <button class="btn btn-sm btn-secondary" (click)="incrementConnector(i)">+</button>
+              </td>
+              <td>
+                <button class="btn btn-sm btn-info me-1" (click)="editConnector(i)">Edit</button>
+                <button class="btn btn-sm btn-danger" (click)="deleteConnector(i)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div-->
+      <div *ngIf="currentStep === 3" class="connectors-section">
+        <h2>Connectors</h2>
+        <button class="btn btn-primary mb-3" (click)="openConnectorPopup()">Add Connector</button>
+        
+        <div class="connector-list">
+          <div *ngFor="let connector of connectors; let i = index" class="connector-card">
+            <div class="connector-header">
+              <h3>{{ connector.connectorType }}</h3>
+              <div class="connector-actions">
+                <button class="btn btn-sm btn-info me-1" (click)="editConnector(i)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="deleteConnector(i)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div class="connector-body">
+              <div class="connector-attribute">
+                <i class="fas fa-bolt"></i> {{ connector.power }} kW
+              </div>
+              <div class="connector-attribute">
+                <i class="fas fa-plug"></i> {{ connector.voltage }} V
+              </div>
+              <div class="connector-attribute">
+                <i class="fas fa-tachometer-alt"></i> {{ connector.intensity }} A
+              </div>
+              <div class="connector-attribute">
+                <i class="fas fa-charging-station"></i> {{ connector.chargingSpeed }} kW/h
+              </div>
+              <div class="connector-attribute">
+                <i class="fas fa-cube"></i> {{ connector.connectorFormat }}
+              </div>
+            </div>
+            <div class="connector-footer">
+              <button class="btn btn-sm btn-secondary" (click)="decrementConnector(i)" [disabled]="connector.quantity <= 1">-</button>
+              <span class="connector-quantity">{{ connector.quantity }}</span>
+              <button class="btn btn-sm btn-secondary" (click)="incrementConnector(i)">+</button>
+            </div>
+          </div>
         </div>
-        <!-- Add other location fields -->
+      </div>
+      
+      <!-- Connector Popup remains the same -->
+      
+      <!-- Connector Popup -->
+      <div class="modal" tabindex="-1" [ngClass]="{'show d-block': showConnectorPopup}" *ngIf="showConnectorPopup">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">{{ editingConnectorIndex === -1 ? 'Add Connector' : 'Edit Connector' }}</h5>
+              <button type="button" class="btn-close" (click)="closeConnectorPopup()"></button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="connectorForm">
+                <div class="mb-3">
+                  <label for="connectorType" class="form-label">Connector Type</label>
+                  <select id="connectorType" formControlName="connectorType" class="form-select">
+                    <option *ngFor="let type of connectorTypes" [value]="type">{{ type }}</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="power" class="form-label">Power (kW)</label>
+                  <input type="number" id="power" formControlName="power" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="voltage" class="form-label">Voltage (V)</label>
+                  <input type="number" id="voltage" formControlName="voltage" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="intensity" class="form-label">Intensity (A)</label>
+                  <input type="number" id="intensity" formControlName="intensity" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="chargingSpeed" class="form-label">Charging Speed (kW/h)</label>
+                  <input type="number" id="chargingSpeed" formControlName="chargingSpeed" class="form-control">
+                </div>
+                <div class="mb-3">
+                  <label for="connectorFormat" class="form-label">Connector Format</label>
+                  <input type="text" id="connectorFormat" formControlName="connectorFormat" class="form-control">
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="closeConnectorPopup()">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="saveConnector()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+    <!-- Step 4: Availabilities -->
+    <div *ngIf="currentStep === 4" class="mb-4">
+      <h2>Availabilities</h2>
+      <button type="button" class="btn btn-primary mb-3" (click)="addAvailability()">Add Availability</button>
+      <div formArrayName="availabilities">
+        <div *ngFor="let availability of availabilitiesFormArray.controls; let i = index" [formGroupName]="i" class="card mb-3">
+          <div class="card-body">
+            <div class="mb-3">
+              <label [for]="'dayOfWeek' + i" class="form-label">Day of Week</label>
+              <select [id]="'dayOfWeek' + i" formControlName="dayOfWeek" class="form-select">
+                <option value="MONDAY">Monday</option>
+                <option value="TUESDAY">Tuesday</option>
+                <option value="WEDNESDAY">Wednesday</option>
+                <option value="THURSDAY">Thursday</option>
+                <option value="FRIDAY">Friday</option>
+                <option value="SATURDAY">Saturday</option>
+                <option value="SUNDAY">Sunday</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label [for]="'startTime' + i" class="form-label">Start Time</label>
+              <input type="time" [id]="'startTime' + i" formControlName="startTime" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label [for]="'endTime' + i" class="form-label">End Time</label>
+              <input type="time" [id]="'endTime' + i" formControlName="endTime" class="form-control">
+            </div>
+            <button type="button" class="btn btn-danger" (click)="removeAvailability(i)">Remove</button>
+          </div>
+        </div>
       </div>
     </div>
   
-    <!-- Add sections for steps 3, 4, and 5 -->
+    <!-- Step 5: Images & Contact -->
+    <div *ngIf="currentStep === 5" class="mb-4">
+      <h2>Images & Contact</h2>
+      <div formArrayName="images">
+        <button type="button" class="btn btn-primary mb-3" (click)="addImage()">Add Image</button>
+        <div *ngFor="let image of imagesFormArray.controls; let i = index" class="mb-3">
+          <input type="text" [formControlName]="i" class="form-control" placeholder="Image URL">
+          <button type="button" class="btn btn-danger mt-2" (click)="removeImage(i)">Remove</button>
+        </div>
+      </div>
   
-    <div>
-      <button type="button" (click)="previousStep()" [disabled]="currentStep === 1">Previous</button>
-      <button type="button" (click)="nextStep()" *ngIf="currentStep < totalSteps">Next</button>
-      <button type="submit" *ngIf="currentStep === totalSteps">Submit</button>
+      <div formGroupName="contactAndSafety" class="mt-4">
+        <h3>Contact Options</h3>
+        <div class="mb-3 form-check">
+          <input type="checkbox" id="allowWhatsApp" formControlName="allowWhatsApp" class="form-check-input">
+          <label for="allowWhatsApp" class="form-check-label">Allow WhatsApp Contact</label>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" id="allowEmail" formControlName="allowEmail" class="form-check-input">
+          <label for="allowEmail" class="form-check-label">Allow Email Contact</label>
+        </div>
+        <div class="mb-3">
+          <label for="emailContact" class="form-label">Email Contact</label>
+          <input type="email" id="emailContact" formControlName="emailContact" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="whatsAppNumber" class="form-label">WhatsApp Number</label>
+          <input type="tel" id="whatsAppNumber" formControlName="whatsAppNumber" class="form-control">
+        </div>
+        <div class="mb-3">
+          <label for="safetyFeatures" class="form-label">Safety Features</label>
+          <select id="safetyFeatures" formControlName="safetyFeatures" multiple class="form-select">
+            <option *ngFor="let feature of safetyFeatures" [value]="feature">{{feature}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Navigation buttons -->
+    <div class="mt-4">
+      <button type="button" class="btn btn-secondary me-2" (click)="previousStep()" [disabled]="currentStep === 1">Previous</button>
+      <button type="button" class="btn btn-primary me-2" (click)="nextStep()" *ngIf="currentStep < 5">Next</button>
+      <button type="submit" class="btn btn-success" *ngIf="currentStep === 5">Submit</button>
     </div>
   </form>
