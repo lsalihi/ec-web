@@ -1,0 +1,131 @@
+/* Base styles */
+.manager-header {
+    background-color: #f8f9fa;
+    border-bottom: 3px solid #1a2a6c;
+    padding: 10px 0;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+/* Logo styles */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
+}
+
+.manager-badge {
+    font-size: 0.8rem;
+    background-color: #1a2a6c;
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 10px;
+    margin-left: 10px;
+}
+
+/* Navigation styles */
+.manager-nav {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-link {
+    color: #1a2a6c;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #e9ecef;
+}
+
+.nav-link.active {
+    background-color: #1a2a6c;
+    color: #ffffff;
+}
+
+.nav-link[routerLink="/map"] {
+    background-color: #fdbb2d;
+    color: #1a2a6c;
+}
+
+.nav-link[routerLink="/map"]:hover {
+    background-color: #fca311;
+}
+
+/* User info styles */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-info span {
+    color: #1a2a6c;
+    font-weight: bold;
+}
+
+.profile-link {
+    color: #1a2a6c;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.profile-link:hover {
+    color: #fdbb2d;
+}
+
+/* Welcome message */
+.welcome-message {
+    font-size: 1.1rem;
+    color: #1a2a6c;
+    margin-bottom: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .manager-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .manager-nav {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .nav-link {
+        width: auto;
+        text-align: center;
+    }
+
+    .user-info {
+        margin-top: 15px;
+        width: 100%;
+        justify-content: space-between;
+    }
+}

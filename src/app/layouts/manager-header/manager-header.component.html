@@ -1,0 +1,26 @@
+<header class="header manager-header">
+    <div class="header-container">
+        <div class="logo">
+            <img src="https://angular.io/assets/images/logos/angular/angular.svg" alt="Logo" />
+            <span class="manager-badge">Manager Portal</span>
+        </div>
+        <nav class="manager-nav">
+            <a routerLink="/dashboard" class="nav-link">Dashboard</a>
+            <a routerLink="/stations" class="nav-link">My Stations</a>
+            <a routerLink="/add-station" class="nav-link">Add New Station</a>
+            <a routerLink="/map" class="nav-link">
+                <i class="fas fa-map-marked-alt"></i> Map View
+            </a>
+            <a routerLink="/analytics" class="nav-link">Analytics</a>
+        </nav>
+        <div class="user-group">
+            <div class="language-selector">
+                <!-- Keep language selector as is -->
+            </div>
+            <div class="user-info">
+                <span>Welcome, {{managerName}}</span>
+                <a (click)="openProfileMenu($event)" class="account-link">My Profile</a>
+            </div>
+        </div>
+    </div>
+</header>
