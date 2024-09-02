@@ -1,3 +1,8 @@
+
+<div class="mb-3 map-container">
+  <div id="map" style="height: 300px; width: 100%; background-color: lightgray;"></div>
+</div>
+
 <form [formGroup]="chargingStationForm" (ngSubmit)="onSubmit()" class="container mt-4">
     <ul class="nav nav-tabs mb-3">
       <li class="nav-item">
@@ -91,58 +96,50 @@
     <!-- Step 2: Location -->
     <div *ngIf="currentStep === 2" formGroupName="location" class="mb-4">
       <h2>Location</h2>
+      
       <div class="mb-3">
-        <label for="street" class="form-label">Street</label>
-        <input type="text" id="street" formControlName="street" class="form-control">
+        <label for="address" class="form-label">Address</label>
+        <input type="text" id="address" formControlName="address" class="form-control">
+        <ul *ngIf="autocompleteResults.length > 0" class="autocomplete-results">
+          <li *ngFor="let result of autocompleteResults" (click)="selectAddress(result)">
+            {{ result.display_name }}
+          </li>
+        </ul>
       </div>
-  
+    
       <div class="mb-3">
-        <label for="streetNumber" class="form-label">Street Number</label>
-        <input type="text" id="streetNumber" formControlName="streetNumber" class="form-control">
+        <button type="button" class="btn btn-secondary" (click)="useCurrentLocation()">Use My Current Location</button>
       </div>
-  
-      <div class="mb-3">
-        <label for="complementAddress" class="form-label">Complement Address</label>
-        <input type="text" id="complementAddress" formControlName="complementAddress" class="form-control">
+    
+      <div class="mb-3 map-container">
+        <div id="map" style="height: 300px; width: 100%; background-color: lightgray;"></div>
       </div>
-  
-      <div class="mb-3">
-        <label for="city" class="form-label">City</label>
-        <input type="text" id="city" formControlName="city" class="form-control">
+
+      
+    
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="latitude" class="form-label">Latitude</label>
+          <input type="number" id="latitude" formControlName="latitude" class="form-control" readonly>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="longitude" class="form-label">Longitude</label>
+          <input type="number" id="longitude" formControlName="longitude" class="form-control" readonly>
+        </div>
       </div>
-  
+    
       <div class="mb-3">
-        <label for="postalCode" class="form-label">Postal Code</label>
-        <input type="text" id="postalCode" formControlName="postalCode" class="form-control">
-      </div>
-  
-      <div class="mb-3">
-        <label for="country" class="form-label">Country</label>
-        <input type="text" id="country" formControlName="country" class="form-control">
-      </div>
-  
-      <div class="mb-3">
-        <label for="latitude" class="form-label">Latitude</label>
-        <input type="number" id="latitude" formControlName="latitude" class="form-control">
-      </div>
-  
-      <div class="mb-3">
-        <label for="longitude" class="form-label">Longitude</label>
-        <input type="number" id="longitude" formControlName="longitude" class="form-control">
-      </div>
-  
-      <div class="mb-3">
-        <label for="instructions" class="form-label">Instructions</label>
+        <label for="instructions" class="form-label">Additional Instructions</label>
         <textarea id="instructions" formControlName="instructions" class="form-control"></textarea>
       </div>
-  
+    
       <div class="mb-3">
         <label for="accessibilityFeatures" class="form-label">Accessibility Features</label>
         <select id="accessibilityFeatures" formControlName="accessibilityFeatures" multiple class="form-select">
           <option *ngFor="let feature of accessibilityFeatures" [value]="feature">{{feature}}</option>
         </select>
       </div>
-  
+    
       <div class="mb-3">
         <label for="amenities" class="form-label">Amenities</label>
         <select id="amenities" formControlName="amenities" multiple class="form-select">
@@ -152,44 +149,6 @@
     </div>
   
     <!-- Step 3: Connectors -->
-    <!--div *ngIf="currentStep === 3" class="connectors-section">
-        <h2>Connectors</h2>
-        <button class="btn btn-primary" (click)="openConnectorPopup()">Add Connector</button>
-        
-        <table class="table mt-3">
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Power (kW)</th>
-              <th>Voltage (V)</th>
-              <th>Intensity (A)</th>
-              <th>Charging Speed (kW/h)</th>
-              <th>Format</th>
-              <th>Quantity</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let connector of connectors; let i = index">
-              <td>{{ connector.connectorType }}</td>
-              <td>{{ connector.power }}</td>
-              <td>{{ connector.voltage }}</td>
-              <td>{{ connector.intensity }}</td>
-              <td>{{ connector.chargingSpeed }}</td>
-              <td>{{ connector.connectorFormat }}</td>
-              <td>
-                <button class="btn btn-sm btn-secondary" (click)="decrementConnector(i)" [disabled]="connector.quantity <= 1">-</button>
-                {{ connector.quantity }}
-                <button class="btn btn-sm btn-secondary" (click)="incrementConnector(i)">+</button>
-              </td>
-              <td>
-                <button class="btn btn-sm btn-info me-1" (click)="editConnector(i)">Edit</button>
-                <button class="btn btn-sm btn-danger" (click)="deleteConnector(i)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div-->
       <div *ngIf="currentStep === 3" class="connectors-section">
         <h2>Connectors</h2>
         <button class="btn btn-primary mb-3" (click)="openConnectorPopup()">Add Connector</button>
