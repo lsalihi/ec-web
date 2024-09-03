@@ -1,6 +1,10 @@
 <div class="connectors-section">
-    <h2>Connectors</h2>
-    <button class="btn btn-primary mb-3" (click)="openConnectorPopup()">Add Connector</button>
+    <h2 class="section-title">Connectors</h2>
+    <div class="action-bar">
+      <button class="btn btn-primary add-connector" (click)="openConnectorPopup()">
+        <i class="fas fa-plus"></i> Add Connector
+      </button>
+    </div>
     
     <div class="connector-list">
       <div *ngFor="let connector of connectors; let i = index" class="connector-card">

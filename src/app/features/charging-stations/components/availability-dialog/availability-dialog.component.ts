@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'app-availability-dialog',
   template: `
     <div class="dialog-container">
-      <h2>{{ data.availability ? 'Edit' : 'Add' }} Availability</h2>
+      <h2  class="section-title">{{ data.availability ? 'Edit' : 'Add' }} Availability</h2>
       <form [formGroup]="availabilityForm">
         <div class="form-group">
           <label for="pattern">Availability Pattern</label>

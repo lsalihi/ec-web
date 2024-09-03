@@ -18,7 +18,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
       <app-availabilities *ngIf="currentStep === 4" [formArray]="availabilitiesFormArray"></app-availabilities>
       <app-images-contact *ngIf="currentStep === 5" [formGroup]="imagesContactFormGroup"></app-images-contact>
 
-      <div class="mt-4">
+      <div class="navigation-buttons">
         <button type="button" class="btn btn-secondary me-2" (click)="previousStep()" [disabled]="currentStep === 1">Previous</button>
         <button type="button" class="btn btn-primary me-2" (click)="nextStep()" *ngIf="currentStep < 5">Next</button>
         <button type="submit" class="btn btn-success" *ngIf="currentStep === 5">Submit</button>
