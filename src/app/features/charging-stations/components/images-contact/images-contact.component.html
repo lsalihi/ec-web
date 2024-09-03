@@ -1,0 +1,40 @@
+<div [formGroup]="form" class="mb-4">
+    <h2>Images & Contact</h2>
+    
+    <div formArrayName="images">
+      <h3>Images</h3>
+      <button type="button" class="btn btn-primary mb-3" (click)="addImage()">Add Image</button>
+      <div *ngFor="let image of imagesFormArray.controls; let i = index" class="mb-3">
+        <div class="input-group">
+          <input type="text" [formControlName]="i" class="form-control" placeholder="Image URL">
+          <button type="button" class="btn btn-danger" (click)="removeImage(i)">Remove</button>
+        </div>
+      </div>
+    </div>
+  
+    <div formGroupName="contactAndSafety" class="mt-4">
+      <h3>Contact Options</h3>
+      <div class="mb-3 form-check">
+        <input type="checkbox" id="allowWhatsApp" formControlName="allowWhatsApp" class="form-check-input">
+        <label for="allowWhatsApp" class="form-check-label">Allow WhatsApp Contact</label>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" id="allowEmail" formControlName="allowEmail" class="form-check-input">
+        <label for="allowEmail" class="form-check-label">Allow Email Contact</label>
+      </div>
+      <div class="mb-3">
+        <label for="emailContact" class="form-label">Email Contact</label>
+        <input type="email" id="emailContact" formControlName="emailContact" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="whatsAppNumber" class="form-label">WhatsApp Number</label>
+        <input type="tel" id="whatsAppNumber" formControlName="whatsAppNumber" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="safetyFeatures" class="form-label">Safety Features</label>
+        <select id="safetyFeatures" formControlName="safetyFeatures" multiple class="form-select">
+          <option *ngFor="let feature of safetyFeatures" [value]="feature">{{feature}}</option>
+        </select>
+      </div>
+    </div>
+  </div>

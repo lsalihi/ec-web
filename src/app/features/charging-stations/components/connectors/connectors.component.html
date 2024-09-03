@@ -1,0 +1,88 @@
+<div class="connectors-section">
+    <h2>Connectors</h2>
+    <button class="btn btn-primary mb-3" (click)="openConnectorPopup()">Add Connector</button>
+    
+    <div class="connector-list">
+      <div *ngFor="let connector of connectors; let i = index" class="connector-card">
+        <div class="connector-header">
+          <h3>{{ connector.value.connectorType }}</h3>
+          <div class="connector-actions">
+            <button class="btn btn-sm btn-info me-1" (click)="editConnector(i)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteConnector(i)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="connector-body">
+          <div class="connector-attribute">
+            <i class="fas fa-bolt"></i> {{ connector.value.power }} kW
+          </div>
+          <div class="connector-attribute">
+            <i class="fas fa-plug"></i> {{ connector.value.voltage }} V
+          </div>
+          <div class="connector-attribute">
+            <i class="fas fa-tachometer-alt"></i> {{ connector.value.intensity }} A
+          </div>
+          <div class="connector-attribute">
+            <i class="fas fa-charging-station"></i> {{ connector.value.chargingSpeed }} kW/h
+          </div>
+          <div class="connector-attribute">
+            <i class="fas fa-cube"></i> {{ connector.value.connectorFormat }}
+          </div>
+        </div>
+        <div class="connector-footer">
+          <button class="btn btn-sm btn-secondary" (click)="decrementConnector(i)" [disabled]="connector.value.quantity <= 1">-</button>
+          <span class="connector-quantity">{{ connector.value.quantity }}</span>
+          <button class="btn btn-sm btn-secondary" (click)="incrementConnector(i)">+</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Connector Popup -->
+    <div class="modal" tabindex="-1" [ngClass]="{'show d-block': showConnectorPopup}" *ngIf="showConnectorPopup">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ editingConnectorIndex === -1 ? 'Add Connector' : 'Edit Connector' }}</h5>
+            <button type="button" class="btn-close" (click)="closeConnectorPopup()"></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="connectorForm">
+              <div class="mb-3">
+                <label for="connectorType" class="form-label">Connector Type</label>
+                <select id="connectorType" formControlName="connectorType" class="form-select">
+                  <option *ngFor="let type of connectorTypes" [value]="type">{{ type }}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="power" class="form-label">Power (kW)</label>
+                <input type="number" id="power" formControlName="power" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="voltage" class="form-label">Voltage (V)</label>
+                <input type="number" id="voltage" formControlName="voltage" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="intensity" class="form-label">Intensity (A)</label>
+                <input type="number" id="intensity" formControlName="intensity" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="chargingSpeed" class="form-label">Charging Speed (kW/h)</label>
+                <input type="number" id="chargingSpeed" formControlName="chargingSpeed" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="connectorFormat" class="form-label">Connector Format</label>
+                <input type="text" id="connectorFormat" formControlName="connectorFormat" class="form-control">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeConnectorPopup()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="saveConnector()">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

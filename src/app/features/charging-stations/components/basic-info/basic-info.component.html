@@ -1,0 +1,59 @@
+<div [formGroup]="formGroup" class="mb-4">
+    <h2>Basic Information</h2>
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" id="name" formControlName="name" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="type" class="form-label">Type</label>
+      <select id="type" formControlName="type" class="form-select">
+        <option *ngFor="let type of stationTypes" [value]="type">{{type}}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="status" class="form-label">Status</label>
+      <select id="status" formControlName="status" class="form-select">
+        <option *ngFor="let status of stationStatuses" [value]="status">{{status}}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="bookingOptions" class="form-label">Booking Options</label>
+      <select id="bookingOptions" formControlName="bookingOptions" class="form-select">
+        <option *ngFor="let option of bookingOptions" [value]="option">{{option}}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="pricePerChargingSession" class="form-label">Price per Charging Session</label>
+      <input type="number" id="pricePerChargingSession" formControlName="pricePerChargingSession" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="durationOfChargingSession" class="form-label">Duration of Charging Session</label>
+      <select id="durationOfChargingSession" formControlName="durationOfChargingSession" class="form-select">
+        <option *ngFor="let duration of chargingDurations" [value]="duration">{{duration}} minutes</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="capacity" class="form-label">Capacity</label>
+      <input type="number" id="capacity" formControlName="capacity" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="energySource" class="form-label">Energy Sources</label>
+      <select id="energySource" formControlName="energySource" multiple class="form-select">
+        <option *ngFor="let source of energySources" [value]="source">{{source}}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="maxPowerOutput" class="form-label">Max Power Output</label>
+      <input type="number" id="maxPowerOutput" formControlName="maxPowerOutput" class="form-control">
+    </div>
+    <div class="mb-3">
+      <label for="paymentMethods" class="form-label">Payment Methods</label>
+      <select id="paymentMethods" formControlName="paymentMethods" multiple class="form-select">
+        <option *ngFor="let method of paymentMethods" [value]="method">{{method}}</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="networkOperator" class="form-label">Network Operator</label>
+      <input type="text" id="networkOperator" formControlName="networkOperator" class="form-control">
+    </div>
+  </div>
