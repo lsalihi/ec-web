@@ -9,11 +9,11 @@ import { ChargingStationDetailComponent } from './charging-station-detail/chargi
 import { ManagerHeaderComponent } from 'app/layouts/manager-header/manager-header.component';
 import { ChargingStationManagerComponent } from './charging-station-manager.component';
 import { BasicInfoComponent } from './components/basic-info/basic-info.component';
-import { LocationComponent } from './components/location/location.component';
 import { ConnectorsComponent } from './components/connectors/connectors.component';
 import { AvailabilitiesComponent } from './components/availabilities/availabilities.component';
 import { ImagesContactComponent } from './components/images-contact/images-contact.component';
 import { AvailabilityDialogComponent } from './components/availability-dialog/availability-dialog.component';
+import { LocationComponent } from './components/location/location.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -25,6 +25,7 @@ import { AvailabilityDialogComponent } from './components/availability-dialog/av
     ChargingStationManagerComponent,
     BasicInfoComponent,
     LocationComponent,
+    //OpenLocationComponent,
     ConnectorsComponent,
     AvailabilitiesComponent,
     ImagesContactComponent,

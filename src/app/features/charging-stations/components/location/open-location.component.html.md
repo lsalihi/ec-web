@@ -6,7 +6,7 @@
       <input type="text" id="address" formControlName="address" class="form-control">
       <ul *ngIf="autocompleteResults.length > 0" class="autocomplete-results">
         <li *ngFor="let result of autocompleteResults" (click)="selectAddress(result)">
-          {{ result.displayName }}
+          {{ result.display_name }}
         </li>
       </ul>
     </div>
