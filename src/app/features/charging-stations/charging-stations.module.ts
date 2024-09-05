@@ -38,11 +38,6 @@ import { LocationComponent } from './components/location/location.component';
     ChargingStationsRoutingModule
   ],
   exports: [
-    ManagerHeaderComponent,
-    ChargingStationListComponent,
-    ChargingStationCreateComponent,
-    ChargingStationDetailComponent,
-    ChargingStationManagerComponent
   ],
 })
 export class ChargingStationsModule { }

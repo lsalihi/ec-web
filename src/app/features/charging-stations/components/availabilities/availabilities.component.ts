@@ -1,78 +1,130 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { AvailabilityDialogComponent } from '../availability-dialog/availability-dialog.component';
 
 @Component({
   selector: 'app-availabilities',
   template: `
-    <div [formGroup]="form" class="mb-4">
-      <h2>Availabilities</h2>
-      
-      <button class="btn btn-primary" (click)="addAvailability()">
-        Add Availability
+    <div [formGroup]="formGroup" class="availabilities-section">
+      <h2 class="section-title">Availabilities</h2>
+     
+      <button class="btn btn-primary add-availability" (click)="addAvailability()">
+        <i class="fas fa-plus"></i> Add Availability
       </button>
-
-      <ul class="list-group mt-3">
-        <li *ngFor="let availability of availabilitiesArray.controls; let i = index" class="list-group-item">
-          <div>{{ getAvailabilityDescription(availability.value) }}</div>
-          <div *ngIf="availability.value.note" class="text-muted">Note: {{ availability.value.note }}</div>
-          <div class="mt-2">
-            <button class="btn btn-sm btn-secondary me-2" (click)="editAvailability(i)">Edit</button>
-            <button class="btn btn-sm btn-danger" (click)="removeAvailability(i)">Remove</button>
+      
+      <ul class="availability-list">
+        <li *ngFor="let availability of availabilitiesArray.controls; let i = index" class="availability-item">
+          <div class="availability-info">
+            <span class="availability-description">{{ getAvailabilityDescription(availability.value) }}</span>
+            <span *ngIf="availability.value.note" class="availability-note">Note: {{ availability.value.note }}</span>
+          </div>
+          <div class="availability-actions">
+            <button class="btn btn-sm btn-secondary" (click)="editAvailability(i)">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="removeAvailability(i)">
+              <i class="fas fa-trash"></i> Remove
+            </button>
           </div>
         </li>
       </ul>
     </div>
   `,
   styles: [`
-    .list-group-item { display: flex; justify-content: space-between; align-items: center; }
+    .availabilities-section {
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      color: #1a2a6c;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #fdbb2d;
+      padding-bottom: 10px;
+    }
+    .add-availability {
+      margin-bottom: 20px;
+    }
+    .availability-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .availability-item {
+      background-color: #ffffff;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .availability-info {
+      flex-grow: 1;
+    }
+    .availability-description {
+      font-weight: bold;
+      color: #1a2a6c;
+    }
+    .availability-note {
+      display: block;
+      font-size: 0.9rem;
+      color: #6c757d;
+      margin-top: 5px;
+    }
+    .availability-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-sm {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+    }
   `]
 })
 export class AvailabilitiesComponent implements OnInit {
-  @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
-  
-  form: FormGroup;
-  availabilityPatterns = [
-    { value: 'always', label: 'Always available' },
-    { value: 'weekdays', label: 'Weekdays only' },
-    { value: 'weekends', label: 'Weekends only' },
-    { value: 'custom', label: 'Custom schedule' }
-  ];
+  @Input() formGroup: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private dialog: MatDialog) {}
 
   ngOnInit() {
-    // We'll setup the form in ngAfterViewInit
-  }
-
-  ngAfterViewInit() {
-    // Get the parent FormGroup
-    const parentForm = this.formGroupDirective.form;
-    // Get our FormGroup
-    this.form = parentForm.get('availabilities') as FormGroup;
-
-    if (!this.form) {
-      console.error('Availabilities form group not found in parent form');
+    if (!this.formGroup) {
+      console.error('FormGroup not provided to AvailabilitiesComponent');
+      this.formGroup = this.fb.group({
+        schedules: this.fb.array([])
+      });
     }
   }
 
   get availabilitiesArray(): FormArray {
-    return this.form.get('schedules') as FormArray;
+    return this.formGroup.get('schedules') as FormArray;
   }
 
   addAvailability() {
-    const dialogRef = this.openDialog(null);
+    const dialogRef = this.dialog.open(AvailabilityDialogComponent, {
+      width: '400px',
+      data: { availability: null }
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.availabilitiesArray.push(this.fb.group(result));
+        this.availabilitiesArray.push(this.createAvailabilityFormGroup(result));
       }
     });
   }
 
   editAvailability(index: number) {
-    const dialogRef = this.openDialog(this.availabilitiesArray.at(index).value);
+    const dialogRef = this.dialog.open(AvailabilityDialogComponent, {
+      width: '400px',
+      data: { availability: this.availabilitiesArray.at(index).value }
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.availabilitiesArray.at(index).patchValue(result);
+        this.availabilitiesArray.at(index).patchValue(this.sanitizeAvailabilityData(result));
       }
     });
   }
@@ -81,33 +133,54 @@ export class AvailabilitiesComponent implements OnInit {
     this.availabilitiesArray.removeAt(index);
   }
 
-  getAvailabilityDescription(availability: any): string {
-    if (availability.pattern === 'always') {
-      return 'Always available';
-    } else if (availability.pattern === 'weekdays') {
-      return `Weekdays ${availability.startTime} - ${availability.endTime}`;
-    } else if (availability.pattern === 'weekends') {
-      return `Weekends ${availability.startTime} - ${availability.endTime}`;
+  private createAvailabilityFormGroup(data: any): FormGroup {
+    return this.fb.group({
+      pattern: [data.pattern, Validators.required],
+      days: [this.sanitizeDays(data.days)],
+      startTime: [data.startTime],
+      endTime: [data.endTime],
+      note: [data.note]
+    });
+  }
+
+  private sanitizeAvailabilityData(data: any): any {
+    return {
+      ...data,
+      days: this.sanitizeDays(data.days)
+    };
+  }
+
+  private sanitizeDays(days: any): string[] {
+    if (Array.isArray(days)) {
+      return days;
+    } else if (typeof days === 'string') {
+      return [days];
     } else {
-      const days = availability.days.join(', ');
-      return `${days} ${availability.startTime} - ${availability.endTime}`;
+      return [];
     }
   }
 
-  private openDialog(availability: any) {
-    // This is a placeholder for opening a dialog
-    // You'll need to implement your own dialog opening mechanism
-    console.log('Opening dialog with', availability);
-    // Return a mock dialog ref with an afterClosed method
-    return {
-      afterClosed: () => ({
-        subscribe: (callback: (result: any) => void) => {
-          // Simulate user input
-          setTimeout(() => {
-            callback(availability || { pattern: 'always', note: 'New availability' });
-          }, 1000);
-        }
-      })
-    };
+  getAvailabilityDescription(availability: any): string {
+    if (!availability) return 'No availability set';
+
+    const timeRange = availability.startTime && availability.endTime
+      ? `${availability.startTime} - ${availability.endTime}`
+      : 'All day';
+
+    switch (availability.pattern) {
+      case 'always':
+        return 'Always available';
+      case 'weekdays':
+        return `Weekdays ${timeRange}`;
+      case 'weekends':
+        return `Weekends ${timeRange}`;
+      case 'custom':
+        const days = Array.isArray(availability.days) && availability.days.length > 0
+          ? availability.days.join(', ')
+          : 'Selected days';
+        return `${days} ${timeRange}`;
+      default:
+        return 'Invalid availability pattern';
+    }
   }
 }
