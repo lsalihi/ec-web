@@ -118,12 +118,23 @@ export class ChargingStationCreateComponent implements OnInit {
       console.log(this.chargingStationForm.value);
       // Handle form submission
     } else {
+      this.logInvalidControls(this.chargingStationForm);
       console.log('Form is invalid');
       this.markFormGroupTouched(this.chargingStationForm);
       // Handle invalid form
     }
   }
 
+  private logInvalidControls(formGroup: FormGroup | FormArray): void {
+    Object.keys(formGroup.controls).forEach(key => {
+      const control = formGroup.get(key);
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        this.logInvalidControls(control); // Recursive call for nested groups or arrays
+      } else if (control?.invalid) {
+        console.log(`Invalid Field: ${key} - Error: ${JSON.stringify(control.errors)}`);
+      }
+    });
+  }
   // Helper method to mark all controls in a form group as touched
   markFormGroupTouched(formGroup: FormGroup | FormArray) {
     Object.values(formGroup.controls).forEach(control => {
