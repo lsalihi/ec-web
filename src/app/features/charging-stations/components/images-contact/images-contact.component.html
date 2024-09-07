@@ -19,25 +19,32 @@
     </div>
   </div>
 
-  <div formGroupName="contactAndSafety" class="mt-4">
-    <h3>Contact Options</h3>
-    <div class="mb-3 form-check">
+  <div formGroupName="contactAndSafety" class="mt-3">
+    <div class="form-check mb-3">
       <input type="checkbox" id="allowWhatsApp" formControlName="allowWhatsApp" class="form-check-input">
       <label for="allowWhatsApp" class="form-check-label">Allow WhatsApp Contact</label>
     </div>
-    <div class="mb-3 form-check">
+    <div class="form-check mb-3">
       <input type="checkbox" id="allowEmail" formControlName="allowEmail" class="form-check-input">
       <label for="allowEmail" class="form-check-label">Allow Email Contact</label>
     </div>
-    <div class="mb-3">
-      <label for="emailContact" class="form-label">Email Contact</label>
-      <input type="email" id="emailContact" formControlName="emailContact" class="form-control">
-    </div>
-    <div class="mb-3">
-      <label for="whatsAppNumber" class="form-label">WhatsApp Number</label>
-      <input type="tel" id="whatsAppNumber" formControlName="whatsAppNumber" class="form-control">
-    </div>
-    <div class="mb-3">
+    
+    <app-form-input
+      *ngIf="contactAndSafetyForm.get('allowEmail')?.value"
+      [parentForm]="contactAndSafetyForm"
+      fieldName="emailContact"
+      label="Email Contact"
+      type="email"
+    ></app-form-input>
+
+    <app-form-input
+      *ngIf="contactAndSafetyForm.get('allowWhatsApp')?.value"
+      [parentForm]="contactAndSafetyForm"
+      fieldName="whatsAppNumber"
+      label="WhatsApp Number"
+      type="tel"
+    ></app-form-input>
+<div class="mb-3">
       <label for="safetyFeatures" class="form-label">Safety Features</label>
       <select id="safetyFeatures" formControlName="safetyFeatures" multiple class="form-select">
         <option *ngFor="let feature of safetyFeatures" [value]="feature">{{feature}}</option>

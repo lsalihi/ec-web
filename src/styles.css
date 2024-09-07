@@ -289,3 +289,23 @@ select[multiple] {
     font-size: 0.875em;
     margin-top: 0.25rem;
   }
+
+  /* General alert styling */
+.alert {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+
+/* Specific styling for danger-type alerts */
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+/* Margin top utility class */
+.mt-3 {
+  margin-top: 1rem; /* '3' often signifies a scale in frameworks like Bootstrap. Adjust value as needed. */
+}

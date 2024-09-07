@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { SafetyFeature } from '../../model/charging-station.model';
 
 @Component({
@@ -18,6 +18,35 @@ export class ImagesContactComponent implements OnInit {
     if (!this.formGroup) {
       console.error('FormGroup not provided to ImagesContactComponent');
     }
+    this.setupDynamicValidators();
+  }
+  setupDynamicValidators() {
+    const allowEmailControl = this.contactAndSafetyForm.get('allowEmail');
+    const allowWhatsAppControl = this.contactAndSafetyForm.get('allowWhatsApp');
+    const emailContactControl = this.contactAndSafetyForm.get('emailContact');
+    const whatsAppNumberControl = this.contactAndSafetyForm.get('whatsAppNumber');
+
+    allowEmailControl?.valueChanges.subscribe(allowed => {
+      if (allowed) {
+        emailContactControl?.setValidators([Validators.required, Validators.email]);
+      } else {
+        emailContactControl?.clearValidators();
+      }
+      emailContactControl?.updateValueAndValidity();
+    });
+
+    allowWhatsAppControl?.valueChanges.subscribe(allowed => {
+      if (allowed) {
+        whatsAppNumberControl?.setValidators([Validators.required]);
+      } else {
+        whatsAppNumberControl?.clearValidators();
+      }
+      whatsAppNumberControl?.updateValueAndValidity();
+    });
+
+    // Initial validation setup
+    allowEmailControl?.updateValueAndValidity();
+    allowWhatsAppControl?.updateValueAndValidity();
   }
 
   get imagesFormArray(): FormArray {

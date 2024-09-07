@@ -99,10 +99,10 @@ export interface ChargingStation {
   }
   
   export enum ChargingDuration {
-    THIRTY_MIN = 30,
-    SIXTY_MIN = 60,
-    NINETY_MIN = 90,
-    ONE_TWENTY_MIN = 120
+    THIRTY_MIN = "30",
+    SIXTY_MIN = "60",
+    NINETY_MIN = "90",
+    ONE_TWENTY_MIN = "120"
   }  
   
   export enum ConnectorType {

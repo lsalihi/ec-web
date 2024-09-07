@@ -10,7 +10,7 @@ import { BookingOptions, ChargingSpeed, EnergySource, PaymentMethod, StationAcce
 export class BasicInfoComponent implements OnInit {
   @Input() formGroup: FormGroup;
 
-  stationAccessiblity: string[] = Object.values(StationAccessibility);
+  stationAccessibility: string[] = Object.values(StationAccessibility);
   chargingSpeed : string[] = Object.values(ChargingSpeed);
   stationStatuses: string[] = Object.values(StationStatus); //['Available', 'In Use', 'Out of Order', 'Under Construction'];
   bookingOptions: string[] = Object.values(BookingOptions); //['Required', 'Optional', 'Not Available'];

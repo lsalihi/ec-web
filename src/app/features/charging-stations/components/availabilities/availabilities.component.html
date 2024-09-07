@@ -1,21 +1,27 @@
 <div [formGroup]="form" class="mb-4">
+  <div class="availabilities-header">
     <h2 class="section-title">Availabilities</h2>
-    
-    <button mat-raised-button color="primary" (click)="addAvailability()">
-      <mat-icon>add</mat-icon> Add Availability
+    <div class="spacer"></div>
+    <button class="btn btn-primary add-availability-btn" (click)="addAvailability()">
+      <i class="fas fa-plus"></i> Add Availability
     </button>
-  
-    <mat-list>
-      <mat-list-item *ngFor="let availability of availabilitiesArray.controls; let i = index">
-        <mat-icon mat-list-icon>schedule</mat-icon>
-        <div mat-line>{{ getAvailabilityDescription(availability.value) }}</div>
-        <div mat-line *ngIf="availability.value.note">Note: {{ availability.value.note }}</div>
-        <button mat-icon-button (click)="editAvailability(i)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="removeAvailability(i)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-list-item>
-    </mat-list>
   </div>
+
+  <ul class="list-group mt-3">
+    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let availability of availabilitiesArray.controls; let i = index">
+      <div>
+        <i class="fas fa-clock mr-2"></i>
+        <span>{{ getAvailabilityDescription(availability.value) }}</span>
+        <small class="d-block text-muted" *ngIf="availability.value.note">Note: {{ availability.value.note }}</small>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-info mr-2" (click)="editAvailability(i)">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-sm btn-danger" (click)="removeAvailability(i)">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -6,53 +6,59 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-availability-dialog',
   template: `
   <div class="dialog-container">
-  <h2 class="dialog-title">{{ data.availability ? 'Edit' : 'Add' }} Availability</h2>
-  <div class="dialog-content">
-    <form [formGroup]="availabilityForm">
-      <div class="form-group">
-        <label for="pattern">Availability Pattern</label>
-        <select id="pattern" formControlName="pattern" class="form-control">
-          <option *ngFor="let pattern of availabilityPatterns" [value]="pattern.value">
-            {{pattern.label}}
-          </option>
-        </select>
-      </div>
-
-      <ng-container *ngIf="availabilityForm.get('pattern')?.value === 'custom'">
+    <h2 class="dialog-title">{{ data.availability ? 'Edit' : 'Add' }} Availability</h2>
+    <div class="dialog-content">
+      <form [formGroup]="availabilityForm">
         <div class="form-group">
-          <label>Days</label>
-          <div class="checkbox-group" formArrayName="days">
-            <div *ngFor="let day of weekDays; let i = index" class="form-check">
-              <input type="checkbox" [id]="day" [formControlName]="i" class="form-check-input">
-              <label [for]="day" class="form-check-label">{{day}}</label>
+          <label for="pattern">Availability Pattern</label>
+          <select id="pattern" formControlName="pattern" class="form-control">
+            <option *ngFor="let pattern of availabilityPatterns" [value]="pattern.value">
+              {{pattern.label}}
+            </option>
+          </select>
+        </div>
+
+        <ng-container *ngIf="availabilityForm.get('pattern')?.value === 'custom'">
+          <div class="form-group">
+            <label>Days</label>
+            <div class="checkbox-group" formArrayName="days">
+              <div *ngFor="let day of weekDays; let i = index" class="form-check">
+                <input type="checkbox" [id]="day" [formControlName]="i" class="form-check-input">
+                <label [for]="day" class="form-check-label">{{day}}</label>
+              </div>
             </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
 
-      <ng-container *ngIf="availabilityForm.get('pattern')?.value !== 'always'">
-        <div class="form-group">
-          <label for="startTime">Start Time</label>
-          <input id="startTime" type="time" formControlName="startTime" class="form-control">
-        </div>
+        <ng-container *ngIf="availabilityForm.get('pattern')?.value !== 'always'">
+          <app-form-input
+            [parentForm]="availabilityForm"
+            fieldName="startTime"
+            label="Start Time"
+            type="time"
+          ></app-form-input>
 
-        <div class="form-group">
-          <label for="endTime">End Time</label>
-          <input id="endTime" type="time" formControlName="endTime" class="form-control">
-        </div>
-      </ng-container>
+          <app-form-input
+            [parentForm]="availabilityForm"
+            fieldName="endTime"
+            label="End Time"
+            type="time"
+          ></app-form-input>
+        </ng-container>
 
-      <div class="form-group">
-        <label for="note">Note</label>
-        <textarea id="note" formControlName="note" class="form-control"></textarea>
-      </div>
-    </form>
+        <app-form-input
+          [parentForm]="availabilityForm"
+          fieldName="note"
+          label="Note"
+          type="textarea"
+        ></app-form-input>
+      </form>
+    </div>
+    <div class="dialog-actions">
+      <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+      <button class="btn btn-primary" (click)="onSave()" [disabled]="availabilityForm.invalid">Save</button>
+    </div>
   </div>
-  <div class="dialog-actions">
-    <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
-    <button class="btn btn-primary" (click)="onSave()" [disabled]="availabilityForm.invalid">Save</button>
-  </div>
-</div>
   `,
   styles: [`
     .dialog-container { padding: 20px; }
@@ -96,7 +102,20 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       color: #1a2a6c;
       border: 1px solid #1a2a6c;
     }
-  `]
+    /* Styles for app-form-input */
+    app-form-input {
+      display: block;
+      margin-bottom: 15px;
+    }
+    app-form-input .form-control {
+      width: 100%; 
+      padding: 8px;
+      border: 1px solid #e9ecef;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+  `],
+  encapsulation: ViewEncapsulation.None
 })
 export class AvailabilityDialogComponent implements OnInit {
   availabilityForm: FormGroup;

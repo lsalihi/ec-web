@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { ChargingSpeed } from '../model/charging-station.model';
 
 @Component({
   selector: 'app-charging-station-create',
@@ -23,8 +22,6 @@ import { ChargingSpeed } from '../model/charging-station.model';
         <button type="button" class="btn btn-primary me-2" (click)="setStep(currentStep + 1)" *ngIf="currentStep < 5">Next</button>
         <button type="submit" class="btn btn-success" (click)="onSubmit()" *ngIf="currentStep === 5">Submit</button>
       </div>
-
-      <pre>{{ chargingStationForm.value | json }}</pre>
 
     </form>
   `
@@ -81,7 +78,7 @@ export class ChargingStationCreateComponent implements OnInit {
         contactAndSafety: this.fb.group({
           allowWhatsApp: [false],
           allowEmail: [false],
-          emailContact: ['', Validators.email],
+          emailContact: [''],
           whatsAppNumber: [''],
           safetyFeatures: [[]]
         })

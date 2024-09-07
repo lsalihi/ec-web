@@ -9,13 +9,15 @@ import { FormGroup, AbstractControl, Validators } from '@angular/forms';
         {{ label }}
         <span *ngIf="isRequired" class="required-asterisk">*</span>
       </label>
-      <input
+      <input *ngIf="type !== 'textarea'"
         [type]="type"
         [id]="fieldName"
         [formControlName]="fieldName"
-        class="form-control"
-        [ngClass]="{'is-invalid': isInvalid}"
-      >
+        class="form-control">
+      <textarea *ngIf="type === 'textarea'"
+        [id]="fieldName"
+        [formControlName]="fieldName"
+        class="form-control"></textarea>
       <div *ngIf="isInvalid" class="invalid-feedback">
         This field is required.
       </div>

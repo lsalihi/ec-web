@@ -57,61 +57,45 @@
     </div>
   
     <!-- Connector Popup -->
-    <div class="modal" tabindex="-1" [ngClass]="{'show d-block': showConnectorPopup}" *ngIf="showConnectorPopup">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{{ editingConnectorIndex === -1 ? 'Add Connector' : 'Edit Connector' }}</h5>
-            <button type="button" class="btn-close" (click)="closeConnectorPopup()"></button>
+<!-- Connector Popup -->
+<div class="modal custom-modal" tabindex="-1" [ngClass]="{'show d-block': showConnectorPopup}" *ngIf="showConnectorPopup">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ editingConnectorIndex === -1 ? 'Add Connector' : 'Edit Connector' }}</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeConnectorPopup()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="connectorForm">
+          <div class="form-group mb-3">
+            <label for="connectorType" class="form-label">Connector Type</label>
+            <select id="connectorType" formControlName="connectorType" class="form-select custom-select">
+              <option *ngFor="let type of connectorTypes" [value]="type">{{ type }}</option>
+            </select>
           </div>
-          <div class="modal-body">
-            <form [formGroup]="connectorForm">
-              <div class="mb-3">
-                <label for="connectorType" class="form-label">Connector Type</label>
-                <select id="connectorType" formControlName="connectorType" class="form-select">
-                  <option *ngFor="let type of connectorTypes" [value]="type">{{ type }}</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="power" class="form-label">Power (kW)</label>
-                <input type="number" id="power" formControlName="power" class="form-control">
-              </div>
-              <div class="mb-3">
-                <label for="voltage" class="form-label">Voltage (V)</label>
-                <input type="number" id="voltage" formControlName="voltage" class="form-control">
-              </div>
-              <div class="mb-3">
-                <label for="intensity" class="form-label">Intensity (A)</label>
-                <input type="number" id="intensity" formControlName="intensity" class="form-control">
-              </div>
-              <div class="mb-3">
-                <label for="chargingSpeed" class="form-label">Charging Speed (kW/h)</label>
-                <input type="number" id="chargingSpeed" formControlName="chargingSpeed" class="form-control">
-              </div>
-              <div class="mb-3">
-                <label for="connectorFormat" class="form-label">Connector Format</label>
-                <input type="text" id="connectorFormat" formControlName="connectorFormat" class="form-control">
-              </div>
-              <div class="mb-3">
-                <label for="pricePerChargingSession" class="form-label">Price per Charging Session</label>
-                <input type="number" id="pricePerChargingSession" formControlName="pricePerChargingSession" class="form-control">
-              </div>
-              <div class="mb-3">
-                <label for="durationOfChargingSession" class="form-label">Duration of Charging Session</label>
-                <select id="durationOfChargingSession" formControlName="durationOfChargingSession" class="form-select">
-                  <option *ngFor="let duration of chargingDurations" [value]="duration">{{duration}} minutes</option>
-                </select>
-              </div>
-            </form>
-            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-              {{ errorMessage }}
-            </div>
+          <app-form-input [parentForm]="connectorForm" fieldName="power" label="Power (kW)" type="number" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="voltage" label="Voltage (V)" type="number" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="intensity" label="Intensity (A)" type="number" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="chargingSpeed" label="Charging Speed (kW/h)" type="number" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="connectorFormat" label="Connector Format" type="text" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="pricePerChargingSession" label="Price per Charging Session" type="number" class="custom-input"></app-form-input>
+          <div class="form-group mb-3">
+            <label for="durationOfChargingSession" class="form-label">Duration of Charging Session</label>
+            <select id="durationOfChargingSession" formControlName="durationOfChargingSession" class="form-select custom-select">
+              <option *ngFor="let duration of chargingDurations" [value]="duration">{{duration}} minutes</option>
+            </select>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeConnectorPopup()">Cancel</button>
-            <button type="button" class="btn btn-primary" (click)="saveConnector()">Save</button>
-          </div>
+        </form>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+          {{ errorMessage }}
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary custom-btn-secondary" (click)="closeConnectorPopup()">Cancel</button>
+        <button type="button" class="btn btn-primary custom-btn-primary" (click)="saveConnector()">Save</button>
+      </div>
     </div>
+  </div>
+</div>
+    
   </div>

@@ -33,3 +33,8 @@
   .autocomplete-results li:hover {
     background-color: #f8f9fa;
   }
+
+  app-form-input {
+    margin-bottom: 1rem;
+    display: block;
+  }
