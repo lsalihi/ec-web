@@ -14,14 +14,14 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 
       <app-basic-info *ngIf="currentStep === 1" [formGroup]="basicInfoFormGroup"></app-basic-info>
       <app-location *ngIf="currentStep === 2" [formGroup]="locationFormGroup"></app-location>
-      <app-connectors *ngIf="currentStep === 3" [formArray]="connectorsFormArray"></app-connectors>
-      <app-availabilities *ngIf="currentStep === 4" [formArray]="availabilitiesFormArray"></app-availabilities>
+      <app-connectors *ngIf="currentStep === 3" [formArray]="connectorsFormArray" [stationCapacity]="stationCapacity"></app-connectors>
+      <app-availabilities *ngIf="currentStep === 4" [formGroup]="availabilitiesFormArray"></app-availabilities>
       <app-images-contact *ngIf="currentStep === 5" [formGroup]="imagesContactFormGroup"></app-images-contact>
 
       <div class="navigation-buttons">
-        <button type="button" class="btn btn-secondary me-2" (click)="previousStep()" [disabled]="currentStep === 1">Previous</button>
-        <button type="button" class="btn btn-primary me-2" (click)="nextStep()" *ngIf="currentStep < 5">Next</button>
-        <button type="submit" class="btn btn-success" *ngIf="currentStep === 5">Submit</button>
+        <button type="button" class="btn btn-secondary me-2" (click)="setStep(currentStep - 1)" *ngIf="currentStep > 1">Previous</button>
+        <button type="button" class="btn btn-primary me-2" (click)="setStep(currentStep + 1)" *ngIf="currentStep < 5">Next</button>
+        <button type="submit" class="btn btn-success" (click)="onSubmit()" *ngIf="currentStep === 5">Submit</button>
       </div>
     </form>
   `
@@ -30,11 +30,15 @@ export class ChargingStationCreateComponent implements OnInit {
   chargingStationForm!: FormGroup;
   currentStep = 1;
   steps = ['Basic Information', 'Location', 'Connectors', 'Availabilities', 'Images & Contact'];
+  stationCapacity: number;
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.initForm();
+    this.chargingStationForm.get('basicInfo.capacity')?.valueChanges.subscribe(capacity => {
+      this.stationCapacity = capacity;
+    });
   }
 
   initForm() {
@@ -44,16 +48,16 @@ export class ChargingStationCreateComponent implements OnInit {
         type: ['', Validators.required],
         status: ['', Validators.required],
         bookingOptions: ['', Validators.required],
-        pricePerChargingSession: [0, [Validators.required, Validators.min(0)]],
-        durationOfChargingSession: [30, [Validators.required, Validators.min(1)]],
+        pricePerChargingSession: [0, Validators.min(0)],
+        durationOfChargingSession: [60, [Validators.required, Validators.min(1)]],
         capacity: [0, [Validators.required, Validators.min(1)]],
-        energySource: [[], Validators.required],
-        maxPowerOutput: [0, [Validators.required, Validators.min(0)]],
+        energySource: [[]],
+        maxPowerOutput: [0, [Validators.min(0)]],
         paymentMethods: [[], Validators.required],
-        networkOperator: ['', Validators.required]
+        networkOperator: ['']
       }),
       location: this.fb.group({
-        address: ['', Validators.required],
+        address: [''],
         latitude: ['', [Validators.required, Validators.min(-90), Validators.max(90)]],
         longitude: ['', [Validators.required, Validators.min(-180), Validators.max(180)]],
         street: [''],
@@ -96,8 +100,8 @@ export class ChargingStationCreateComponent implements OnInit {
     return this.chargingStationForm.get('connectors') as FormArray;
   }
 
-  get availabilitiesFormArray(): FormArray {
-    return this.chargingStationForm.get('availabilities') as FormArray;
+  get availabilitiesFormArray(): FormGroup {
+    return this.chargingStationForm.get('availabilities') as FormGroup;
   }
 
   get imagesContactFormGroup(): FormGroup {
@@ -105,20 +109,10 @@ export class ChargingStationCreateComponent implements OnInit {
   }
 
   setStep(step: number) {
+    // Save form data before changing steps
     this.currentStep = step;
   }
 
-  nextStep() {
-    if (this.currentStep < 5) {
-      this.currentStep++;
-    }
-  }
-
-  previousStep() {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-    }
-  }
 
   onSubmit() {
     if (this.chargingStationForm.valid) {
@@ -141,4 +135,5 @@ export class ChargingStationCreateComponent implements OnInit {
       }
     });
   }
+ 
 }

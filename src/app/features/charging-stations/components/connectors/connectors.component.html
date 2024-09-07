@@ -5,16 +5,18 @@
         <i class="fas fa-plus"></i> Add Connector
       </button>
     </div>
-    
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
     <div class="connector-list">
       <div *ngFor="let connector of connectors; let i = index" class="connector-card">
         <div class="connector-header">
           <h3>{{ connector.value.connectorType }}</h3>
           <div class="connector-actions">
-            <button class="btn btn-sm btn-info me-1" (click)="editConnector(i)">
+            <button type="button" class="btn btn-sm btn-info me-1" (click)="editConnector(i)">
               <i class="fas fa-edit"></i>
             </button>
-            <button class="btn btn-sm btn-danger" (click)="deleteConnector(i)">
+            <button type="button" class="btn btn-sm btn-danger" (click)="deleteConnector(i)">
               <i class="fas fa-trash"></i>
             </button>
           </div>
@@ -37,9 +39,9 @@
           </div>
         </div>
         <div class="connector-footer">
-          <button class="btn btn-sm btn-secondary" (click)="decrementConnector(i)" [disabled]="connector.value.quantity <= 1">-</button>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="decrementConnector(i)" [disabled]="connector.value.quantity <= 1">-</button>
           <span class="connector-quantity">{{ connector.value.quantity }}</span>
-          <button class="btn btn-sm btn-secondary" (click)="incrementConnector(i)">+</button>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="incrementConnector(i)">+</button>
         </div>
       </div>
     </div>
@@ -81,6 +83,9 @@
                 <input type="text" id="connectorFormat" formControlName="connectorFormat" class="form-control">
               </div>
             </form>
+            <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" (click)="closeConnectorPopup()">Cancel</button>

@@ -14,6 +14,8 @@ import { AvailabilitiesComponent } from './components/availabilities/availabilit
 import { ImagesContactComponent } from './components/images-contact/images-contact.component';
 import { AvailabilityDialogComponent } from './components/availability-dialog/availability-dialog.component';
 import { LocationComponent } from './components/location/location.component';
+import { FormInputComponent } from 'app/layouts/common/form-input.component';
+import { FormSelectComponent } from 'app/layouts/common/form-select.component';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -29,7 +31,10 @@ import { LocationComponent } from './components/location/location.component';
     ConnectorsComponent,
     AvailabilitiesComponent,
     ImagesContactComponent,
-    AvailabilityDialogComponent
+    AvailabilityDialogComponent,
+
+    FormInputComponent,
+    FormSelectComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +43,8 @@ import { LocationComponent } from './components/location/location.component';
     ChargingStationsRoutingModule
   ],
   exports: [
+    FormInputComponent,
+    FormSelectComponent
   ],
 })
 export class ChargingStationsModule { }

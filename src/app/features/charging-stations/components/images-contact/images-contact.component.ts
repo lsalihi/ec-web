@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, FormGroupDirective } from '@angular/forms';
-import { SafetyFeature } from 'app/features/charging-stations/model/charging-station.model';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-images-contact',
@@ -8,25 +7,31 @@ import { SafetyFeature } from 'app/features/charging-stations/model/charging-sta
   styleUrls: ['./images-contact.component.css']
 })
 export class ImagesContactComponent implements OnInit {
-  @ViewChild(FormGroupDirective) formGroupDirective: FormGroupDirective;
-  
-  form: FormGroup;
-  safetyFeatures = Object.values(SafetyFeature);
+  @Input() form: FormGroup;
+
+  safetyFeatures = [
+    'Emergency Call Button',
+    'Surveillance Cameras',
+    'Lighting',
+    'Security Personnel',
+    'Fencing'
+  ];
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    // We'll setup the form in ngAfterViewInit
-  }
-
-  ngAfterViewInit() {
-    // Get the parent FormGroup
-    const parentForm = this.formGroupDirective.form;
-    // Get our FormGroup
-    this.form = parentForm.get('imagesAndContact') as FormGroup;
-
     if (!this.form) {
-      console.error('ImagesAndContact form group not found in parent form');
+      console.error('Form not provided to ImagesContactComponent');
+      this.form = this.fb.group({
+        images: this.fb.array([]),
+        contactAndSafety: this.fb.group({
+          allowWhatsApp: [false],
+          allowEmail: [false],
+          emailContact: [''],
+          whatsAppNumber: [''],
+          safetyFeatures: [[]]
+        })
+      });
     }
   }
 
@@ -34,8 +39,17 @@ export class ImagesContactComponent implements OnInit {
     return this.form.get('images') as FormArray;
   }
 
-  addImage() {
-    this.imagesFormArray.push(this.fb.control(''));
+  onImageSelected(event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.imagesFormArray.push(this.fb.control(e.target.result));
+        };
+        reader.readAsDataURL(files[i]);
+      }
+    }
   }
 
   removeImage(index: number) {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AvailabilityDialogComponent } from '../availability-dialog/availability-dialog.component';
@@ -85,18 +85,29 @@ import { AvailabilityDialogComponent } from '../availability-dialog/availability
     }
   `]
 })
-export class AvailabilitiesComponent implements OnInit {
+export class AvailabilitiesComponent implements OnInit, OnChanges {
   @Input() formGroup: FormGroup;
 
   constructor(private fb: FormBuilder, private dialog: MatDialog) {}
 
   ngOnInit() {
+    this.initializeFormGroup();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['formGroup'] && !changes['formGroup'].firstChange) {
+      this.initializeFormGroup();
+    }
+  }
+
+  private initializeFormGroup() {
     if (!this.formGroup) {
-      console.error('FormGroup not provided to AvailabilitiesComponent');
+      console.warn('FormGroup not provided to AvailabilitiesComponent. Creating a new one.');
       this.formGroup = this.fb.group({
         schedules: this.fb.array([])
       });
     }
+    console.log('AvailabilitiesComponent initialized with:', this.availabilitiesArray.value);
   }
 
   get availabilitiesArray(): FormArray {
@@ -112,6 +123,7 @@ export class AvailabilitiesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.availabilitiesArray.push(this.createAvailabilityFormGroup(result));
+        console.log('Added availability:', this.availabilitiesArray.value);
       }
     });
   }

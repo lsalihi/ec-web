@@ -274,3 +274,18 @@ select[multiple] {
       width: 95%;
     }
   }
+
+  .required-asterisk {
+    color: red;
+    margin-left: 3px;
+  }
+  
+  .is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .invalid-feedback {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+  }
