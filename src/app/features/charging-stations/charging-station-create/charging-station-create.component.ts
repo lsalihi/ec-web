@@ -6,7 +6,10 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
   styleUrls: ['./charging-station-create.component.css'],
   template: `
     <form [formGroup]="chargingStationForm" (ngSubmit)="onSubmit()" class="container mt-4">
-      <ul class="nav nav-tabs mb-3">
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+    </div>  
+    <ul class="nav nav-tabs mb-3">
         <li class="nav-item" *ngFor="let step of steps; let i = index">
           <a class="nav-link" [class.active]="currentStep === i + 1" (click)="setStep(i + 1)">{{step}}</a>
         </li>
@@ -31,6 +34,7 @@ export class ChargingStationCreateComponent implements OnInit {
   currentStep = 1;
   steps = ['Basic Information', 'Location', 'Connectors', 'Availabilities', 'Images & Contact'];
   stationCapacity: number = 1;
+  errorMessage: string = '';
 
   constructor(private fb: FormBuilder) {}
 
@@ -42,6 +46,7 @@ export class ChargingStationCreateComponent implements OnInit {
   }
 
   initForm() {
+    this.errorMessage = '';
     this.chargingStationForm = this.fb.group({
       basicInfo: this.fb.group({
         name: ['', Validators.required],
@@ -114,6 +119,7 @@ export class ChargingStationCreateComponent implements OnInit {
 
 
   onSubmit() {
+    this.errorMessage = '';
     if (this.chargingStationForm.valid) {
       console.log(this.chargingStationForm.value);
       // Handle form submission
@@ -132,6 +138,12 @@ export class ChargingStationCreateComponent implements OnInit {
         this.logInvalidControls(control); // Recursive call for nested groups or arrays
       } else if (control?.invalid) {
         console.log(`Invalid Field: ${key} - Error: ${JSON.stringify(control.errors)}`);
+        
+        if(this.errorMessage) {
+          this.errorMessage += ` | ${key}`
+        } else {
+          this.errorMessage += `Invalid Field(s): ${key}`;
+        }
       }
     });
   }
