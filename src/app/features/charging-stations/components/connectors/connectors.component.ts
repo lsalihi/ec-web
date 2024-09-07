@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChargingDuration, ConnectorType } from '../../model/charging-station.model';
 
 @Component({
   selector: 'app-connectors',
@@ -13,7 +14,8 @@ export class ConnectorsComponent implements OnInit {
   connectorForm: FormGroup;
   showConnectorPopup = false;
   editingConnectorIndex = -1;
-  connectorTypes = ['Type 1', 'Type 2', 'CHAdeMO', 'CCS', 'Tesla'];
+  connectorTypes = Object.values(ConnectorType);
+  chargingDurations = Object.values(ChargingDuration);
   errorMessage: string = '';
 
   constructor(private fb: FormBuilder) {}
@@ -38,7 +40,9 @@ export class ConnectorsComponent implements OnInit {
       intensity: [0, [Validators.required, Validators.min(0)]],
       chargingSpeed: [0, [Validators.required, Validators.min(0)]],
       connectorFormat: ['', Validators.required],
-      quantity: [1, [Validators.required, Validators.min(1)]]
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      pricePerChargingSession: [0, Validators.min(0)],
+      durationOfChargingSession: [60, [Validators.required, Validators.min(1)]]
     });
   }
 

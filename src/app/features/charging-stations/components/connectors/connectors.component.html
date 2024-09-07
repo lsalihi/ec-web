@@ -22,20 +22,30 @@
           </div>
         </div>
         <div class="connector-body">
-          <div class="connector-attribute">
-            <i class="fas fa-bolt"></i> {{ connector.value.power }} kW
+          <div class="connector-attributes">
+            <div class="connector-attribute">
+              <i class="fas fa-bolt"></i> {{ connector.value.power }} kW
+            </div>
+            <div class="connector-attribute">
+              <i class="fas fa-plug"></i> {{ connector.value.voltage }} V
+            </div>
+            <div class="connector-attribute">
+              <i class="fas fa-tachometer-alt"></i> {{ connector.value.intensity }} A
+            </div>
+            <div class="connector-attribute">
+              <i class="fas fa-charging-station"></i> {{ connector.value.chargingSpeed }} kW/h
+            </div>
+            <div class="connector-attribute">
+              <i class="fas fa-cube"></i> {{ connector.value.connectorFormat }}
+            </div>
           </div>
-          <div class="connector-attribute">
-            <i class="fas fa-plug"></i> {{ connector.value.voltage }} V
-          </div>
-          <div class="connector-attribute">
-            <i class="fas fa-tachometer-alt"></i> {{ connector.value.intensity }} A
-          </div>
-          <div class="connector-attribute">
-            <i class="fas fa-charging-station"></i> {{ connector.value.chargingSpeed }} kW/h
-          </div>
-          <div class="connector-attribute">
-            <i class="fas fa-cube"></i> {{ connector.value.connectorFormat }}
+          <div class="connector-pricing">
+            <div class="price">
+              <i class="fas fa-tag"></i> {{ connector.value.pricePerChargingSession | currency }}
+            </div>
+            <div class="duration">
+              <i class="fas fa-clock"></i> {{ connector.value.durationOfChargingSession }} min
+            </div>
           </div>
         </div>
         <div class="connector-footer">
@@ -81,6 +91,16 @@
               <div class="mb-3">
                 <label for="connectorFormat" class="form-label">Connector Format</label>
                 <input type="text" id="connectorFormat" formControlName="connectorFormat" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="pricePerChargingSession" class="form-label">Price per Charging Session</label>
+                <input type="number" id="pricePerChargingSession" formControlName="pricePerChargingSession" class="form-control">
+              </div>
+              <div class="mb-3">
+                <label for="durationOfChargingSession" class="form-label">Duration of Charging Session</label>
+                <select id="durationOfChargingSession" formControlName="durationOfChargingSession" class="form-select">
+                  <option *ngFor="let duration of chargingDurations" [value]="duration">{{duration}} minutes</option>
+                </select>
               </div>
             </form>
             <div *ngIf="errorMessage" class="alert alert-danger mt-3">

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { BookingOptions, ChargingSpeed, EnergySource, PaymentMethod, StationAccessibility, StationStatus } from '../../model/charging-station.model';
 
 @Component({
   selector: 'app-basic-info',
@@ -9,12 +10,12 @@ import { FormGroup } from '@angular/forms';
 export class BasicInfoComponent implements OnInit {
   @Input() formGroup: FormGroup;
 
-  stationTypes: string[] = ['Type 1', 'Type 2', 'CHAdeMO', 'CCS'];
-  stationStatuses: string[] = ['Available', 'In Use', 'Out of Order'];
-  bookingOptions: string[] = ['Required', 'Optional', 'Not Available'];
-  chargingDurations: number[] = [15, 30, 45, 60, 90, 120];
-  energySources: string[] = ['Grid', 'Solar', 'Wind', 'Battery Storage'];
-  paymentMethods: string[] = ['Credit Card', 'Debit Card', 'Mobile Payment', 'RFID Card'];
+  stationAccessiblity: string[] = Object.values(StationAccessibility);
+  chargingSpeed : string[] = Object.values(ChargingSpeed);
+  stationStatuses: string[] = Object.values(StationStatus); //['Available', 'In Use', 'Out of Order', 'Under Construction'];
+  bookingOptions: string[] = Object.values(BookingOptions); //['Required', 'Optional', 'Not Available'];
+  energySources: string[] = Object.values(EnergySource); 
+  paymentMethods: string[] = Object.values(PaymentMethod);
 
   constructor() { }
 

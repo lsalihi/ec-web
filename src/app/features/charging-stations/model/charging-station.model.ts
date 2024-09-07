@@ -2,12 +2,11 @@ export interface ChargingStation {
     // Existing fields
     id?: string;
     name: string;
-    type: StationType;
+    accessibility: StationAccessibility;
+    chargingSpedd : ChargingSpeed;
     capacity: number;
     status: StationStatus;
     bookingOptions: BookingOptions;
-    pricePerChargingSession: number;
-    durationOfChargingSession: ChargingDuration;
     location: Location;
     connectors: Connector[];
     availabilities: Availability[];
@@ -41,49 +40,8 @@ export interface ChargingStation {
   
     // New field
     status: ConnectorStatus;
-  }
-  
-  // New enums and types
-  export enum EnergySource {
-    GRID = 'GRID',
-    SOLAR = 'SOLAR',
-    WIND = 'WIND',
-    MIXED = 'MIXED'
-  }
-  
-  export enum PaymentMethod {
-    CREDIT_CARD = 'CREDIT_CARD',
-    DEBIT_CARD = 'DEBIT_CARD',
-    MOBILE_APP = 'MOBILE_APP',
-    RFID_CARD = 'RFID_CARD',
-    CASH = 'CASH'
-  }
-  
-  export enum AccessibilityFeature {
-    WHEELCHAIR_ACCESSIBLE = 'WHEELCHAIR_ACCESSIBLE',
-    WELL_LIT = 'WELL_LIT',
-    EASY_ACCESS_PARKING = 'EASY_ACCESS_PARKING'
-  }
-  
-  export enum Amenity {
-    RESTROOMS = 'RESTROOMS',
-    CAFE = 'CAFE',
-    SHOP = 'SHOP',
-    WIFI = 'WIFI',
-    SEATING_AREA = 'SEATING_AREA'
-  }
-  
-  export enum SafetyFeature {
-    CCTV = 'CCTV',
-    EMERGENCY_BUTTON = 'EMERGENCY_BUTTON',
-    FIRE_EXTINGUISHER = 'FIRE_EXTINGUISHER',
-    LIGHTING = 'LIGHTING'
-  }
-  
-  export enum ConnectorStatus {
-    OPERATIONAL = 'OPERATIONAL',
-    OUT_OF_ORDER = 'OUT_OF_ORDER',
-    MAINTENANCE = 'MAINTENANCE'
+    pricePerChargingSession: number;
+    durationOfChargingSession: ChargingDuration;
   }
   
   
@@ -114,20 +72,30 @@ export interface ChargingStation {
     whatsAppNumber?: string;
   }
   
-  export enum StationType {
-    PUBLIC = 'PUBLIC',
-    PRIVATE = 'PRIVATE'
+  export enum StationAccessibility {
+    PUBLIC = 'Public',
+    PRIVATE = 'Private'
   }
+  
+  export enum ChargingSpeed {
+    FAST = 'Fast',
+    SLOW = 'Slow'
+  }  
   
   export enum StationStatus {
-    ACTIVE = 'ACTIVE',
-    INACTIVE = 'INACTIVE'
+    AVAILABLE = 'Available',
+    OUT_OF_ORDER = 'Out of Order',
+    UNDER_CONSTRUCTION = 'Under Construction',
+    //ACTIVE = 'Active',
+    INACTIVE = 'Inactive',
+    DRAFT = 'Draft'
   }
   
+  
   export enum BookingOptions {
-    NO_BOOKING = 'NO_BOOKING',
-    REQUIRED = 'REQUIRED',
-    OPTIONAL = 'OPTIONAL'
+    NO_BOOKING = 'No Booking',
+    REQUIRED = 'Required',
+    OPTIONAL = 'Optional'
   }
   
   export enum ChargingDuration {
@@ -135,21 +103,68 @@ export interface ChargingStation {
     SIXTY_MIN = 60,
     NINETY_MIN = 90,
     ONE_TWENTY_MIN = 120
-  }
+  }  
   
   export enum ConnectorType {
-    TYPE1 = 'TYPE1',
-    TYPE2 = 'TYPE2',
-    CCS = 'CCS',
-    CHADEMO = 'CHADEMO'
-  }
+    TYPE1 = 'Type 1 (J1772)',
+    TYPE2 = 'Type 2 (Mennekes)',
+    CCS = 'Combined Charging System (CCS)',
+    CHADEMO = 'CHAdeMO',
+    TESLA_SUPERCHARGER = 'Tesla Supercharger',
+    TESLA_DESTINATION = 'Tesla Destination Charger',
+    GB_T = 'GB/T (China Standard)'
+  }  
   
   export enum DayOfWeek {
-    MONDAY = 'MONDAY',
-    TUESDAY = 'TUESDAY',
-    WEDNESDAY = 'WEDNESDAY',
-    THURSDAY = 'THURSDAY',
-    FRIDAY = 'FRIDAY',
-    SATURDAY = 'SATURDAY',
-    SUNDAY = 'SUNDAY'
+    MONDAY = 'Monday',
+    TUESDAY = 'Tuesday',
+    WEDNESDAY = 'Wednesday',
+    THURSDAY = 'Thursday',
+    FRIDAY = 'Friday',
+    SATURDAY = 'Saturday',
+    SUNDAY = 'Sunday'
   }
+  
+  export enum EnergySource {
+    GRID = 'Grid Power',
+    SOLAR = 'Solar Power',
+    WIND = 'Wind Power',
+    MIXED = 'Mixed Energy Sources'  // This could represent any combination of the above
+  }
+  
+  export enum PaymentMethod {
+    CREDIT_CARD = 'Credit Card',
+    DEBIT_CARD = 'Debit Card',
+    MOBILE_APP = 'Mobile App Payment',
+    RFID_CARD = 'RFID Card',
+    CASH = 'Cash'
+  }
+  export enum AccessibilityFeature {
+    WHEELCHAIR_ACCESSIBLE = 'Wheelchair Accessible',
+    WELL_LIT = 'Well-Lit Environment',
+    EASY_ACCESS_PARKING = 'Easy Access Parking'
+  }
+  export enum Amenity {
+    RESTROOMS = 'Public Restrooms',
+    CAFE = 'Café',
+    SHOP = 'Convenience Shop',
+    WIFI = 'Free Wi-Fi Access',
+    SEATING_AREA = 'Seating Area'
+  }
+      
+  export enum SafetyFeature {
+    CCTV = 'CCTV Cameras',
+    EMERGENCY_BUTTON = 'Emergency Call Button',
+    FIRE_EXTINGUISHER = 'Fire Extinguisher',
+    LIGHTING = 'Adequate Lighting',
+    SURVEILLANCE_CAMERAS = 'Surveillance Cameras',
+    SECURITY_PERSONNEL = 'Security Personnel',
+    FENCING = 'Security Fencing'
+  }  
+  
+  export enum ConnectorStatus {
+    OPERATIONAL = 'Operational',
+    OUT_OF_ORDER = 'Out of Order',
+    MAINTENANCE = 'Under Maintenance',
+    INACTIVE = 'Inactive'
+  }  

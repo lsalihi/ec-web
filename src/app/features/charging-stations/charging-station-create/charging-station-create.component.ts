@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { ChargingSpeed } from '../model/charging-station.model';
 
 @Component({
   selector: 'app-charging-station-create',
@@ -17,12 +18,14 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
       <app-connectors *ngIf="currentStep === 3" [formArray]="connectorsFormArray" [stationCapacity]="stationCapacity"></app-connectors>
       <app-availabilities *ngIf="currentStep === 4" [formGroup]="availabilitiesFormArray"></app-availabilities>
       <app-images-contact *ngIf="currentStep === 5" [formGroup]="imagesContactFormGroup"></app-images-contact>
-
       <div class="navigation-buttons">
         <button type="button" class="btn btn-secondary me-2" (click)="setStep(currentStep - 1)" *ngIf="currentStep > 1">Previous</button>
         <button type="button" class="btn btn-primary me-2" (click)="setStep(currentStep + 1)" *ngIf="currentStep < 5">Next</button>
         <button type="submit" class="btn btn-success" (click)="onSubmit()" *ngIf="currentStep === 5">Submit</button>
       </div>
+
+      <pre>{{ chargingStationForm.value | json }}</pre>
+
     </form>
   `
 })
@@ -30,7 +33,7 @@ export class ChargingStationCreateComponent implements OnInit {
   chargingStationForm!: FormGroup;
   currentStep = 1;
   steps = ['Basic Information', 'Location', 'Connectors', 'Availabilities', 'Images & Contact'];
-  stationCapacity: number;
+  stationCapacity: number = 1;
 
   constructor(private fb: FormBuilder) {}
 
@@ -45,12 +48,11 @@ export class ChargingStationCreateComponent implements OnInit {
     this.chargingStationForm = this.fb.group({
       basicInfo: this.fb.group({
         name: ['', Validators.required],
-        type: ['', Validators.required],
-        status: ['', Validators.required],
+        accessibility: ['', Validators.required],
+        chargingSpeed: [''],
+        status: ['Draft', Validators.required],
         bookingOptions: ['', Validators.required],
-        pricePerChargingSession: [0, Validators.min(0)],
-        durationOfChargingSession: [60, [Validators.required, Validators.min(1)]],
-        capacity: [0, [Validators.required, Validators.min(1)]],
+        capacity: [1, [Validators.required, Validators.min(1)]],
         energySource: [[]],
         maxPowerOutput: [0, [Validators.min(0)]],
         paymentMethods: [[], Validators.required],
@@ -83,7 +85,7 @@ export class ChargingStationCreateComponent implements OnInit {
           whatsAppNumber: [''],
           safetyFeatures: [[]]
         })
-      })
+      }),
     });
   }
 

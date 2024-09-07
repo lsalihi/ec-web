@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { SafetyFeature } from '../../model/charging-station.model';
 
 @Component({
   selector: 'app-images-contact',
@@ -7,36 +8,24 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./images-contact.component.css']
 })
 export class ImagesContactComponent implements OnInit {
-  @Input() form: FormGroup;
-
-  safetyFeatures = [
-    'Emergency Call Button',
-    'Surveillance Cameras',
-    'Lighting',
-    'Security Personnel',
-    'Fencing'
-  ];
-
+  @Input() formGroup: FormGroup;
+  safetyFeatures = Object.values(SafetyFeature);
+ 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    if (!this.form) {
-      console.error('Form not provided to ImagesContactComponent');
-      this.form = this.fb.group({
-        images: this.fb.array([]),
-        contactAndSafety: this.fb.group({
-          allowWhatsApp: [false],
-          allowEmail: [false],
-          emailContact: [''],
-          whatsAppNumber: [''],
-          safetyFeatures: [[]]
-        })
-      });
+    console.log('ImagesContactComponent initialized with formGroup:', this.formGroup);
+    if (!this.formGroup) {
+      console.error('FormGroup not provided to ImagesContactComponent');
     }
   }
 
   get imagesFormArray(): FormArray {
-    return this.form.get('images') as FormArray;
+    return this.formGroup.get('images') as FormArray;
+  }
+
+  get contactAndSafetyForm(): FormGroup {
+    return this.formGroup.get('contactAndSafety') as FormGroup;
   }
 
   onImageSelected(event: Event) {
