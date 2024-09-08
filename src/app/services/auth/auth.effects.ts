@@ -16,32 +16,37 @@ export class AuthEffects {
       ofType(AuthActions.login),
       switchMap(({ email, password }) =>
         this.authService.login(email, password).pipe(
-          map(user => AuthActions.loginSuccess({ user })),
+          map(response => AuthActions.loginSuccess({
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken
+          })),
           catchError(error => of(AuthActions.loginFailure({ error: error.message })))
         )
       )
     )
   );
 
-  // Effect to handle successful login (side effect only, no dispatch)
   loginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
-        tap(({ user }) => {
-          localStorage.setItem('user', JSON.stringify(user));
+        tap(({ accessToken, refreshToken}) => {
+          //localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('accessToken', accessToken);
+          localStorage.setItem('refreshToken', refreshToken);
         })
       ),
     { dispatch: false }
   );
 
-  // Effect to handle logout (side effect only, no dispatch)
   logout$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap(() => {
           localStorage.removeItem('user');
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
         })
       ),
     { dispatch: false }

@@ -1,20 +1,35 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginPopupComponent } from '../features/auth/login-popup/login-popup.component';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
+import { Store } from '@ngrx/store';
+import * as AuthActions from './auth/auth.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  private apiUrl = '/idp';
+  store = inject(Store);
+  private apiUrl = '/idp'; // identity provider
 
   constructor(private dialog: MatDialog, private http: HttpClient) {}
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/uaa/token`, { email, password });
+  }
+
+
+  refreshToken(refreshToken: string): Observable<any> {
+    return this.http.post('/uaa/token/refresh', { refreshToken }).pipe(
+      map((response: any) => {
+        this.store.dispatch(AuthActions.setTokens({
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken
+        }));
+        return response;
+      })
+    );
   }
 
   register(user: any): Observable<any> {

@@ -1,0 +1,101 @@
+<div class="connectors-section">
+    <h2 class="section-title">Connectors</h2>
+    <div class="action-bar">
+      <button class="btn btn-primary add-connector" (click)="openConnectorPopup()">
+        <i class="fas fa-plus"></i> Add Connector
+      </button>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+      {{ errorMessage }}
+    </div>
+    <div class="connector-list">
+      <div *ngFor="let connector of connectors; let i = index" class="connector-card">
+        <div class="connector-header">
+          <h3>{{ connector.value.connectorType }}</h3>
+          <div class="connector-actions">
+            <button type="button" class="btn btn-sm btn-info me-1" (click)="editConnector(i)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-danger" (click)="deleteConnector(i)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="connector-body">
+          <div class="connector-attributes">
+            <div class="connector-attribute">
+              <i class="fas fa-bolt"></i> {{ connector.value.power }} kW
+            </div>
+            <div class="connector-attribute">
+              <i class="fas fa-plug"></i> {{ connector.value.voltage }} V
+            </div>
+            <div class="connector-attribute">
+              <i class="fas fa-tachometer-alt"></i> {{ connector.value.intensity }} A
+            </div>
+            <div class="connector-attribute">
+              <i class="fas fa-charging-station"></i> {{ connector.value.chargingSpeed }} kW/h
+            </div>
+            <div class="connector-attribute">
+              <i class="fas fa-cube"></i> {{ connector.value.connectorFormat }}
+            </div>
+          </div>
+          <div class="connector-pricing">
+            <div class="price">
+              <i class="fas fa-tag"></i> {{ connector.value.pricePerChargingSession | currency }}
+            </div>
+            <div class="duration">
+              <i class="fas fa-clock"></i> {{ connector.value.durationOfChargingSession }} min
+            </div>
+          </div>
+        </div>
+        <div class="connector-footer">
+          <button type="button" class="btn btn-sm btn-secondary" (click)="decrementConnector(i)" [disabled]="connector.value.quantity <= 1">-</button>
+          <span class="connector-quantity">{{ connector.value.quantity }}</span>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="incrementConnector(i)">+</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Connector Popup -->
+<!-- Connector Popup -->
+<div class="modal custom-modal" tabindex="-1" [ngClass]="{'show d-block': showConnectorPopup}" *ngIf="showConnectorPopup">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{ editingConnectorIndex === -1 ? 'Add Connector' : 'Edit Connector' }}</h5>
+        <button type="button" class="btn-close btn-close-white" (click)="closeConnectorPopup()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="connectorForm">
+          <div class="form-group mb-3">
+            <label for="connectorType" class="form-label">Connector Type</label>
+            <select id="connectorType" formControlName="connectorType" class="form-select custom-select">
+              <option *ngFor="let type of connectorTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+          <app-form-input [parentForm]="connectorForm" fieldName="power" label="Power (kW)" type="number" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="voltage" label="Voltage (V)" type="number" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="intensity" label="Intensity (A)" type="number" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="chargingSpeed" label="Charging Speed (kW/h)" type="number" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="connectorFormat" label="Connector Format" type="text" class="custom-input"></app-form-input>
+          <app-form-input [parentForm]="connectorForm" fieldName="pricePerChargingSession" label="Price per Charging Session" type="number" class="custom-input"></app-form-input>
+          <div class="form-group mb-3">
+            <label for="durationOfChargingSession" class="form-label">Duration of Charging Session</label>
+            <select id="durationOfChargingSession" formControlName="durationOfChargingSession" class="form-select custom-select">
+              <option *ngFor="let duration of chargingDurations" [value]="duration">{{duration}} minutes</option>
+            </select>
+          </div>
+        </form>
+        <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+          {{ errorMessage }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary custom-btn-secondary" (click)="closeConnectorPopup()">Cancel</button>
+        <button type="button" class="btn btn-primary custom-btn-primary" (click)="saveConnector()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+    
+  </div>

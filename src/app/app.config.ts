@@ -18,6 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideStore({ auth: authReducer }),
     provideEffects(AuthEffects),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideHttpClient(/*withInterceptors([authInterceptor])*/)
+    provideHttpClient(withInterceptors([authInterceptor])),
   ]
 };

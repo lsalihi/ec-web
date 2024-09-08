@@ -1,0 +1,55 @@
+<div [formGroup]="formGroup" class="mb-4">
+  <h2 class="section-title">Basic Information</h2>
+
+  <app-form-input [parentForm]="formGroup" fieldName="name" label="Name" type="text"></app-form-input>
+
+  <div class="mb-3">
+    <label for="accessibility" class="form-label">Accessibility</label>
+    <select id="accessibility" formControlName="accessibility" class="form-select">
+      <option *ngFor="let type of stationAccessibility" [value]="type">{{type}}</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="chargingSpeed" class="form-label">Charging Speed</label>
+    <select id="chargingSpeed" formControlName="chargingSpeed" class="form-select">
+      <option *ngFor="let speed of chargingSpeed" [value]="speed">{{speed}}</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="status" class="form-label">Status</label>
+    <select id="status" formControlName="status" class="form-select">
+      <option *ngFor="let status of stationStatuses" [value]="status">{{status}}</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="bookingOptions" class="form-label">Booking Options</label>
+    <select id="bookingOptions" formControlName="bookingOptions" class="form-select">
+      <option *ngFor="let option of bookingOptions" [value]="option">{{option}}</option>
+    </select>
+  </div>
+
+  <app-form-input [parentForm]="formGroup" fieldName="capacity" label="Capacity" type="number"></app-form-input>
+
+  <div class="mb-3">
+    <label for="energySource" class="form-label">Energy Sources</label>
+    <select id="energySource" formControlName="energySource" multiple class="form-select">
+      <option *ngFor="let source of energySources" [value]="source">{{source}}</option>
+    </select>
+  </div>
+
+  <app-form-input [parentForm]="formGroup" fieldName="maxPowerOutput" label="Max Power Output"
+    type="number"></app-form-input>
+
+  <div class="mb-3">
+    <label for="paymentMethods" class="form-label">Payment Methods</label>
+    <select id="paymentMethods" formControlName="paymentMethods" multiple class="form-select">
+      <option *ngFor="let method of paymentMethods" [value]="method">{{method}}</option>
+    </select>
+  </div>
+
+  <app-form-input [parentForm]="formGroup" fieldName="networkOperator" label="Network Operator"
+    type="text"></app-form-input>
+</div>
