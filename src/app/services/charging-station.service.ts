@@ -7,7 +7,7 @@ import { ChargingStation } from 'app/features/charging-stations/model/charging-s
   providedIn: 'root'
 })
 export class ChargingStationService {
-  private apiUrl = 'http://myserver:8080/idp/api/charging-stations'; // Adjust this URL as needed
+  private apiUrl = 'http://134.255.177.102:8080/cp/charging-stations'; // charging points
 
   constructor(private http: HttpClient) { }
 
@@ -20,7 +20,7 @@ export class ChargingStationService {
   }
 
   createChargingStation(station: ChargingStation): Observable<ChargingStation> {
-    return this.http.post<ChargingStation>(this.apiUrl, station);
+    return this.http.post<ChargingStation>(`${this.apiUrl}`, station);
   }
 
   updateChargingStation(station: ChargingStation): Observable<ChargingStation> {

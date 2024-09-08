@@ -4,11 +4,14 @@ import { ChargingStation } from 'app/features/charging-stations/model/charging-s
 
 export interface ChargingStationState {
   formDraft: Partial<ChargingStation> | null;
-  // Add other state properties as needed
+  savedStation: ChargingStation | null;
+  error: any;
 }
 
 export const initialState: ChargingStationState = {
   formDraft: null,
+  savedStation: null,
+  error: null,
 };
 
 export const chargingStationReducer = createReducer(
@@ -17,5 +20,14 @@ export const chargingStationReducer = createReducer(
     ...state,
     formDraft: { ...state.formDraft, ...formData },
   })),
-  // Handle other actions
+  on(ChargingStationActions.submitFormSuccess, (state, { station }) => ({
+    ...state,
+    savedStation: station,
+    formDraft: null,
+    error: null,
+  })),
+  on(ChargingStationActions.submitFormFailure, (state, { error }) => ({
+    ...state,
+    error,
+  }))
 );

@@ -16,9 +16,15 @@ import { AvailabilityDialogComponent } from './components/availability-dialog/av
 import { LocationComponent } from './components/location/location.component';
 import { FormInputComponent } from 'app/layouts/common/form-input.component';
 import { FormSelectComponent } from 'app/layouts/common/form-select.component';
+import { StoreModule } from '@ngrx/store';
+import { chargingStationReducer } from 'app/services/charging-station/charging-station.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { ChargingStationEffects } from 'app/services/charging-station/charging-station.effects';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 
 @NgModule({
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [AuthGuard],
   declarations: [
     ManagerHeaderComponent,
     ChargingStationListComponent,
@@ -40,7 +46,9 @@ import { FormSelectComponent } from 'app/layouts/common/form-select.component';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    ChargingStationsRoutingModule
+    ChargingStationsRoutingModule,
+    StoreModule.forFeature('chargingStation', chargingStationReducer),
+    EffectsModule.forFeature([ChargingStationEffects])
   ],
   exports: [
     FormInputComponent,

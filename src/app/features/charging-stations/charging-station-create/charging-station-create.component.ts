@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { Store } from '@ngrx/store';
+import * as ChargingStationActions from 'app/services/charging-station/charging-station.actions';
 
 @Component({
   selector: 'app-charging-station-create',
@@ -35,6 +37,8 @@ export class ChargingStationCreateComponent implements OnInit {
   steps = ['Basic Information', 'Location', 'Connectors', 'Availabilities', 'Images & Contact'];
   stationCapacity: number = 1;
   errorMessage: string = '';
+
+  store = inject(Store);
 
   constructor(private fb: FormBuilder) {}
 
@@ -115,6 +119,8 @@ export class ChargingStationCreateComponent implements OnInit {
   setStep(step: number) {
     // Save form data before changing steps
     this.currentStep = step;
+
+    this.errorMessage = '';
   }
 
 
@@ -122,12 +128,12 @@ export class ChargingStationCreateComponent implements OnInit {
     this.errorMessage = '';
     if (this.chargingStationForm.valid) {
       console.log(this.chargingStationForm.value);
-      // Handle form submission
+      // Dispatch the submitForm action with the form value
+      this.store.dispatch(ChargingStationActions.submitForm({ formData: this.chargingStationForm.value }));
     } else {
       this.logInvalidControls(this.chargingStationForm);
       console.log('Form is invalid');
       this.markFormGroupTouched(this.chargingStationForm);
-      // Handle invalid form
     }
   }
 

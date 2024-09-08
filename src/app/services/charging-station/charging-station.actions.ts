@@ -13,4 +13,12 @@ export const submitForm = createAction(
   props<{ formData: ChargingStation }>()
 );
 
-// Add more actions as needed
+export const submitFormSuccess = createAction(
+  '[Charging Station] Submit Form Success',
+  props<{ station: ChargingStation }>()
+);
+
+export const submitFormFailure = createAction(
+  '[Charging Station] Submit Form Failure',
+  props<{ error: any }>()
+);

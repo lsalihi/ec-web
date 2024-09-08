@@ -1,30 +1,51 @@
+// auth.interceptor.ts
 import { HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { selectAuthToken } from './auth.selectors';
-import { switchMap, take } from 'rxjs/operators';
+import { switchMap, take, catchError } from 'rxjs/operators';
+import * as AuthSelectors from './auth.selectors';
+import { AuthService } from '../auth.service';
+import { inject } from '@angular/core';
 
-export const authInterceptor: HttpInterceptorFn = (req, next) => {
+export const authInterceptor : HttpInterceptorFn =  (req, next) => {
   const store = inject(Store);
+  const authService = inject(AuthService);
 
-  return store.select(selectAuthToken).pipe(
+  const isApiRequest = req.url.startsWith('/assets/') ||
+    req.url.includes('api.geoapify.com') ||
+    req.url.includes('tile.openstreetmap.org');
+
+  if (isApiRequest) {
+    // If it's not an API request, proceed without modification
+    return next(req);
+  }
+
+  return store.select(AuthSelectors.selectAccessToken).pipe(
     take(1),
     switchMap(token => {
-      let authReq = req.clone({
-        withCredentials: true // This allows cookies to be sent with the request
-      });
-
       if (token) {
-        authReq = authReq.clone({
-          setHeaders: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }
+        req = req.clone({
+          setHeaders: { Authorization: `Bearer ${token}` }
         });
       }
-
-      return next(authReq);
+      return next(req).pipe(
+        catchError(error => {
+          if (error.status === 401) {
+            return store.select(AuthSelectors.selectRefreshToken).pipe(
+              take(1),
+              switchMap(refreshToken => {
+                if (refreshToken) {
+                  return authService.refreshToken(refreshToken).pipe(
+                    switchMap(() => next(req))
+                  );
+                }
+                // Handle case where refresh token is not available
+                return next(req);
+              })
+            );
+          }
+          throw error;
+        })
+      );
     })
   );
 };

@@ -5,9 +5,9 @@
             <span class="manager-badge">Manager Portal</span>
         </div>
         <nav class="manager-nav">
-            <a routerLink="/dashboard" class="nav-link">Dashboard</a>
-            <a routerLink="/stations" class="nav-link">My Stations</a>
-            <a routerLink="/add-station" class="nav-link">Add New Station</a>
+            <a routerLink="/" class="nav-link">Accueil</a>
+            <a routerLink="/charging-stations" class="nav-link">Mes Stations</a>
+            <a routerLink="/charging-stations/create" class="nav-link">Ajouter Station</a>
             <a routerLink="/map" class="nav-link">
                 <i class="fas fa-map-marked-alt"></i> Map View
             </a>
@@ -17,10 +17,41 @@
             <div class="language-selector">
                 <!-- Keep language selector as is -->
             </div>
-            <div class="user-info">
-                <span>Welcome, {{managerName}}</span>
-                <a (click)="openProfileMenu($event)" class="account-link">My Profile</a>
+            <div class="user-info" *ngIf="isAuthenticated$ | async; else notAuthenticated">
+                <div class="profile-dropdown" (click)="toggleProfileMenu()" (clickOutside)="closeProfileMenu()">
+                    <span>Bonjour, {{ (user$ | async)?.name || 'Utilisateur' }}</span>
+                    <div class="profile-menu" *ngIf="showProfileMenu">
+                        <a routerLink="/edit-profile" class="menu-item">
+                            <i class="fas fa-user"></i> Modifier mon Profile
+                        </a>
+                        <a routerLink="/payment-info" class="menu-item">
+                            <i class="fas fa-credit-card"></i> Information de Paiment
+                        </a>
+                        <a routerLink="/change-password" class="menu-item">
+                            <i class="fas fa-lock"></i> Modifier Mot de passe
+                        </a>
+                        <a routerLink="/my-car" class="menu-item">
+                            <i class="fas fa-car"></i> Ma Voiture EV
+                        </a>
+                        <div class="menu-separator"></div>
+                        <a routerLink="/charging-stations" class="menu-item">
+                            <i class="fas fa-charging-station"></i> Mes Stations
+                        </a>
+                        <a routerLink="/my-bookings" class="menu-item">
+                            <i class="fas fa-calendar-alt"></i> Mes résérvations
+                        </a>
+                        <div class="menu-separator"></div>
+                        <a (click)="logout($event)" class="menu-item logout">
+                            <i class="fas fa-sign-out-alt"></i> Se Déconnecter
+                        </a>
+                        <button class="add-property-btn">Ajouter Station</button>
+                    </div>
+                </div>
             </div>
+            <ng-template #notAuthenticated>
+                <span>Bonjour,</span>
+                <a (click)="openLoginPopup($event)" class="account-link">Identifiez-vous</a>
+            </ng-template>
         </div>
     </div>
 </header>

@@ -4,11 +4,13 @@ import { ChargingStationManagerComponent } from './charging-station-manager.comp
 import { ChargingStationListComponent } from './charging-station-list/charging-station-list.component';
 import { ChargingStationCreateComponent } from './charging-station-create/charging-station-create.component';
 import { ChargingStationDetailComponent } from './charging-station-detail/charging-station-detail.component';
+import { AuthGuard } from 'app/services/auth/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: ChargingStationManagerComponent,
+    canActivate: [AuthGuard], // Apply AuthGuard to the parent route
     children: [
       { path: '', component: ChargingStationListComponent },
       { path: 'create', component: ChargingStationCreateComponent },
