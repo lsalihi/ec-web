@@ -1,10 +1,18 @@
+
 "use client"
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { registerUser } from "../../../app/services/userService";
+import axios from "axios";
+// import { redirect } from "next/dist/server/api-utils";
+import nookies from 'nookies'
+
 
 function Signup() {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [isValidEmail, setIsValidEmail] = useState(true);
 
@@ -66,36 +74,13 @@ function Signup() {
       username,
     };
 
-    // fetch('http://localhost:8087/keycloak/register')
-    // .then(response => response.json())
-    // .then(data => console.log(data))
-    // .catch(error => console.error('Error:', error));
     try {
-      const response = await fetch('http://localhost:8080/KEYCLOAK-AUTH-SERVICE/keycloak/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'PostmanRuntime/7.40.0',
-          'Accept' : '*/*',
-          'Accept-Encoding': 'gzip, deflate, br',
-          'Connection': 'keep-alive',
-
-        },
-        body: JSON.stringify(user),
-      });
-
-      if (response.ok) {
-        // Handle successful registration
-        alert('Registration successful!');
-        window.location.href = '/';
-      } else {
-        // Handle errors
-        const errorData = await response.json();
-        alert(`Registration failed: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('An error occurred. Please try again later.');
+      const response = await registerUser(user);
+      console.log("success", response);
+      // Handle successful registration
+    } catch (error: any) {
+      // Handle error
+      console.error(error.message);
     }
 
   };
