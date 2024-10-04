@@ -8,7 +8,7 @@ const initialState = {
         "version": "1.0.0",
         "newPoint": "Found A Charging Point",
         "addPoint": "List Your Charging Point",
-        "MapPage": "Hello",
+        "MapPage": "location",
         "SigninPoint": "Hello, identify yourself",
         "TitleText": "Discover,reserve, charge and Share Power",
         "ContentText": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ea quod neque dolores ad quo nam eius eum est natus nisi porro nobis aliquid tempore illo corporis, totam officia dolor!",
