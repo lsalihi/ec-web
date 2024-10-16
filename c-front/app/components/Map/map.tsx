@@ -5,6 +5,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Header from '../Home/Header';
 import { FaSearch, FaPlus, FaMinus, FaChargingStation } from 'react-icons/fa';
+import { useSearchParams } from 'next/navigation';
 
 interface ChargingStation {
   id: string;
@@ -28,6 +29,8 @@ const Map = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [chargingStations, setChargingStations] = useState<ChargingStation[]>([]);
   const [userCoordinates, setUserCoordinates] = useState<{ lat: number; lng: number } | null>(null);
+  const [newStationMarker, setNewStationMarker] = useState<mapboxgl.Marker | null>(null);
+  const searchParams = useSearchParams();
 
   const MapKey = process.env.NEXT_PUBLIC_MAP_BOX_KEY;
 
@@ -72,6 +75,19 @@ const Map = () => {
     }
   }, [map, userCoordinates]);
 
+  useEffect(() => {
+    if (map) {
+      const lat = searchParams.get('lat');
+      const lng = searchParams.get('lng');
+      if (lat && lng) {
+        const newLat = parseFloat(lat);
+        const newLng = parseFloat(lng);
+        map.flyTo({ center: [newLng, newLat], zoom: 15 });
+        addNewStationMarker(newLat, newLng);
+      }
+    }
+  }, [map, searchParams]);
+
   const addMarkersToMap = () => {
     if (!map) return;
 
@@ -101,6 +117,43 @@ const Map = () => {
 
       marker.setPopup(popup);
     });
+  };
+
+  const addNewStationMarker = async (lat: number, lng: number) => {
+    if (!map) return;
+
+    // Remove existing new station marker
+    if (newStationMarker) {
+      newStationMarker.remove();
+    }
+
+    // Fetch the new station data
+    try {
+      const response = await fetch(`/api/charging-stations?lat=${lat}&lng=${lng}`);
+      const newStation: ChargingStation = await response.json();
+
+      const marker = new mapboxgl.Marker({ color: '#FF0000' })
+        .setLngLat([lng, lat])
+        .addTo(map);
+
+      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+        `
+        <div>
+          <h3>${newStation.name}</h3>
+          ${newStation.image ? `<img src="${newStation.image}" alt="${newStation.name}" style="width: 100%; max-width: 200px;" />` : ''}
+          <p>Type: ${newStation.type}</p>
+          <p>Capacity: ${newStation.capacity}</p>
+          <p>Status: ${newStation.status}</p>
+          <p>Address: ${newStation.streetNumber} ${newStation.street}, ${newStation.city}, ${newStation.postalCode}</p>
+        </div>
+        `
+      );
+
+      marker.setPopup(popup);
+      setNewStationMarker(marker);
+    } catch (error) {
+      console.error('Error fetching new station data:', error);
+    }
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,10 +194,8 @@ const Map = () => {
           </div>
         </div>
 
-        {/* Map container */}
         <div id="map" className="w-full h-full" />
 
-        {/* Zoom and Add New Charging Point buttons */}
         <div className="absolute bottom-4 right-4 z-10 flex flex-col space-y-2">
           <div className="flex space-x-2">
             <button

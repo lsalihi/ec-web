@@ -5,14 +5,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from "../../../redux/store/store";
 import { fetchUserData } from '../../services/getUserService';
 import { FaGlobe, FaBars, FaTimes, FaCaretDown } from 'react-icons/fa';
+import mapboxgl from 'mapbox-gl';
 
-const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAP_BOX_KEY; // Ensure this is a valid and unrestricted key
+const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAP_BOX_KEY;
 
 interface HeaderProps {
   setCoordinates: (coords: { lat: number; lng: number }) => void;
 }
 
-export default function Header({ setCoordinates }: HeaderProps) {
+const Header: React.FC<HeaderProps> = ({ setCoordinates }) => {
   const data = useSelector((state: RootState) => state.home.DataInfo);
   const dataFR = useSelector((state: RootState) => state.fr.DatafrenchInfo);
   const [language, setLanguage] = useState("English");
@@ -44,7 +45,7 @@ export default function Header({ setCoordinates }: HeaderProps) {
   }, []);
 
   useEffect(() => {
-    if (navigator.geolocation) {
+    if (navigator.geolocation && setCoordinates) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log("Geolocation success:", position);
@@ -106,7 +107,7 @@ export default function Header({ setCoordinates }: HeaderProps) {
               <Link href="/map" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition duration-300">
                 {currentData.newPoint}
               </Link>
-              <Link href="/ListChargingPoint" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition duration-300">
+              <Link href="/ListChargePoint" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700 transition duration-300">
                 {currentData.addPoint}
               </Link>
               <div className="px-3 py-2 rounded-md text-sm font-medium">
@@ -230,7 +231,7 @@ export default function Header({ setCoordinates }: HeaderProps) {
             <Link href="/map" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700">
               {currentData.newPoint}
             </Link>
-            <Link href="/ListChargingPoint" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700">
+            <Link href="/ListChargePoint" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-gray-700">
               {currentData.addPoint}
             </Link>
             <div className="block px-3 py-2 rounded-md text-base font-medium text-white">
@@ -295,4 +296,6 @@ export default function Header({ setCoordinates }: HeaderProps) {
       )}
     </header>
   );
-}
+};
+
+export default Header;

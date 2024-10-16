@@ -7,7 +7,9 @@ import { useSelector } from "react-redux";
 import Header from "./components/Home/Header";
 import { FaGooglePlay, FaApple, FaChargingStation, FaMapMarkedAlt, FaStar } from 'react-icons/fa';
 
-export default function Home() {
+const Home = () => {
+  const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
+
   const data = useSelector((state: RootState) => state.home.DataInfo);
   const dataFR = useSelector((state: RootState) => state.fr.DatafrenchInfo);
   const [language, setLanguage] = useState("English");
@@ -20,7 +22,7 @@ export default function Home() {
 
   return (
     <div className="font-sans">
-      <Header />
+      <Header setCoordinates={setCoordinates} />
       
       {/* Hero Section */}
       <div
@@ -202,4 +204,6 @@ export default function Home() {
       </footer>
     </div>
   );
-}
+};
+
+export default Home;
